@@ -1,13 +1,18 @@
 import React from "react";
+import { Route, Switch } from "react-router-dom";
 import "./App.css";
-// import { Route, Switch } from "react-router-dom";
 import Header from "./components/common/Header";
+import Main from "./components/Main";
+import Transactions from "./components/transactions/transactions";
 
 function App() {
   return (
     <React.Fragment>
       <Header />
-      <h1>Hello world</h1>
+      <Switch>
+        <Route path='/' exact component={Main} />
+        <Route path='/transactions' component={Transactions} />
+      </Switch>
     </React.Fragment>
   );
 }
