@@ -14,7 +14,7 @@ const SideNav = () => {
       <nav className='side-navbar'>
         <ul className='side-navbar-list'>
           <li className='side-navbar-item'>
-            <Link to='/transactions' className='side-nav-link'>
+            <Link to='/' className='side-nav-link'>
               <FontAwesomeIcon className='icon' icon={faClipboard} />
               Transactions
             </Link>

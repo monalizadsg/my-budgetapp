@@ -1,0 +1,23 @@
+.transaction-container {
+  border: 1px solid green;
+  width: 100%;
+  padding-left: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      padding: 12px 10px;
+      background-color: #fafafa;
+      border: 2px solid #1dc29f;
+      border-radius: 5px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1dc29f;
+      outline-color: #22aa8d;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,7 +1,12 @@
 .main-container {
   width: 70%;
-  margin: 20px auto;
+  margin: 40px auto;
   display: flex;
   border: solid 1px red;
   height: 80vh;
+
+  .main-body-container {
+    width: 80%;
+    border: solid 1px yellow;
+  }
 }
