@@ -1,0 +1,11 @@
+.transaction-form-wrapper {
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .MuiOutlinedInput-root {
+      margin-bottom: 1rem;
+    }
+  }
+}
