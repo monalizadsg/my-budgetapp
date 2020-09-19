@@ -1,19 +1,32 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from "@material-ui/core";
+import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
 import TransactionForm from "./TransactionForm";
+import {
+  getTransactions,
+  getCategories,
+} from "../../services/transactionsService";
 import "./Transactions.scss";
 
 class Transactions extends Component {
   state = {
     isOpen: false,
+    data: [],
+    categories: [],
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: 5,
   };
+
+  async componentDidMount() {
+    const { pageSize, currentPage } = this.state;
+    const data = await getTransactions(currentPage, pageSize);
+    const categories = await getCategories();
+    this.setState({
+      data: data.transactions,
+      totalPages: data.totalPages,
+      categories,
+    });
+  }
 
   openModal = () => {
     this.setState({ isOpen: true });
@@ -23,6 +36,7 @@ class Transactions extends Component {
     this.setState({ isOpen: false });
   };
   render() {
+    const { categories } = this.state;
     return (
       <div className='transaction-container'>
         <div className='header'>
@@ -38,16 +52,12 @@ class Transactions extends Component {
         >
           <DialogTitle>Transaction</DialogTitle>
           <DialogContent>
-            <TransactionForm />
+            <TransactionForm
+              categories={categories}
+              onSave={this.handleClickOnAdd}
+              closeModal={this.closeModal}
+            />
           </DialogContent>
-          <DialogActions>
-            <Button onClick={this.closeModal} color='primary'>
-              Cancel
-            </Button>
-            <Button onClick={this.closeModal} color='primary'>
-              Add
-            </Button>
-          </DialogActions>
         </Dialog>
       </div>
     );
