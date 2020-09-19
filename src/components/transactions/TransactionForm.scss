@@ -4,8 +4,18 @@
     flex-direction: column;
     width: 100%;
 
-    .MuiOutlinedInput-root {
+    .MuiTextField-root,
+    .MuiFormControl-root {
       margin-bottom: 1rem;
+    }
+
+    .form-actions {
+      flex: 0 0 auto;
+      display: flex;
+      // padding: 8px;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 10px 0;
     }
   }
 }
