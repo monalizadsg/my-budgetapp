@@ -1,5 +1,5 @@
 .transaction-container {
-  border: 1px solid green;
+  // border: 1px solid green;
   width: 100%;
   height: 100%;
   padding-left: 20px;
@@ -16,6 +16,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 30px;
 
     button {
       padding: 12px 10px;
@@ -28,5 +29,9 @@
       outline-color: #22aa8d;
       cursor: pointer;
     }
+  }
+
+  .list {
+    // border: orange 1px solid;
   }
 }
