@@ -1,0 +1,47 @@
+.card {
+  // border: green solid 1px;
+  margin-top: 20px;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: flex-end;
+    padding: 0 10px;
+    font-size: 15px;
+    font-weight: 500;
+
+    .item-date {
+      color: #b1b1b1;
+    }
+  }
+
+  .card-item {
+    // border: red 1px solid;
+    border-radius: 6px;
+  }
+
+  .list-item {
+    // border: red 1px solid;
+    display: flex;
+    justify-content: space-between;
+
+    .item-title {
+      font-weight: 400;
+      color: #262626;
+    }
+
+    .item-subcategory {
+      font-size: 14px;
+    }
+  }
+
+  .MuiList-padding {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
+  .MuiPaper-rounded {
+    border-radius: none;
+  }
+}
