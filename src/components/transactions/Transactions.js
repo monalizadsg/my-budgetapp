@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
 import TransactionForm from "./TransactionForm";
+import TransactionList from "./TransactionList";
 import {
   getTransactions,
   getCategories,
@@ -13,7 +14,7 @@ class Transactions extends Component {
     data: [],
     categories: [],
     totalPages: 0,
-    currentPage: 1,
+    currentPage: 0,
     pageSize: 5,
   };
 
@@ -36,12 +37,15 @@ class Transactions extends Component {
     this.setState({ isOpen: false });
   };
   render() {
-    const { categories } = this.state;
+    const { categories, data } = this.state;
     return (
       <div className='transaction-container'>
         <div className='header'>
           <h2>Transactions</h2>
           <button onClick={this.openModal}>+ Add Transactions</button>
+        </div>
+        <div className='list'>
+          <TransactionList data={data} />
         </div>
         <Dialog
           open={this.state.isOpen}
