@@ -7,7 +7,7 @@
     justify-content: space-between;
     margin-bottom: 5px;
     align-items: flex-end;
-    padding: 0 10px;
+    padding: 0 20px;
     font-size: 15px;
     font-weight: 500;
 
@@ -19,6 +19,12 @@
   .card-item {
     // border: red 1px solid;
     border-radius: 6px;
+  }
+
+  .card-item:hover {
+    cursor: pointer;
+    box-shadow: 0 4px 10px 0 rgba(93, 130, 170, 0.21);
+    border: 1px solid rgba(108, 123, 138, 0.2);
   }
 
   .list-item {
@@ -42,6 +48,6 @@
   }
 
   .MuiPaper-rounded {
-    border-radius: none;
+    margin-bottom: 10px;
   }
 }

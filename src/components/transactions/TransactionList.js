@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { format } from "date-fns";
 import groupBy from "lodash/groupBy";
-import { Card, Divider, List, ListItem } from "@material-ui/core";
+import { Card, List, ListItem } from "@material-ui/core";
 import "./TransactionList.scss";
 
 class TransactionList extends Component {
@@ -26,30 +26,32 @@ class TransactionList extends Component {
     const { data, onClickTransaction } = this.props;
     const dataByDate = groupBy(data, "date");
     const result = Object.entries(dataByDate).map(([key, value], index) => {
-      console.log({ key, value });
+      // console.log({ key, value });
       const now = format(new Date(), "yyyy-MM-dd");
       const date = key === now ? "Today" : format(new Date(key), "MM/dd/yyyy");
       const totalAmount = this.computeTotal(value);
-      const totalAmountStyle = {
-        color: totalAmount > 0 ? "#3b5998" : "#DC143C",
-      };
+
       return (
         <React.Fragment key={index}>
           <div className='card'>
             <div className='card-header'>
               <div className='item-date'>{date}</div>
-              <div className='item-total' style={totalAmountStyle}>
-                {totalAmount}
-              </div>
+              <div className='item-total'>{totalAmount}</div>
             </div>
-            <Card className='card-item'>
-              {value.map((item, index) => {
-                const categoryType = item.category.type;
-                const amountStyle = {
-                  color: categoryType === "INCOME" ? "#3b5998" : "#DC143C",
-                };
-                return (
-                  <List className='list' key={item.id}>
+
+            {value.map((item) => {
+              const categoryType = item.category.type;
+              const amountStyle = {
+                color: categoryType === "INCOME" ? "#1dc29f" : "#fe3b2c",
+                fontWeight: "500",
+              };
+              return (
+                <Card className='card-item'>
+                  <List
+                    className='list'
+                    key={item.id}
+                    onClick={() => onClickTransaction(item)}
+                  >
                     <ListItem className='list-item'>
                       <div className='item'>
                         <h4 className='item-title'>{item.description}</h4>
@@ -59,11 +61,10 @@ class TransactionList extends Component {
                         {item.amount}
                       </div>
                     </ListItem>
-                    {value.length - 1 > index ? <Divider /> : null}
                   </List>
-                );
-              })}
-            </Card>
+                </Card>
+              );
+            })}
           </div>
         </React.Fragment>
       );
