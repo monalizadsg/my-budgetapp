@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import "./TransactionForm.scss";
 import { format } from "date-fns";
-import { createTransaction } from "../../services/transactionsService";
+import {
+  createTransaction,
+  updateTransaction,
+} from "../../services/transactionsService";
 import {
   TextField,
   FormControl,
@@ -24,28 +27,67 @@ class TransactionForm extends Component {
     category: "",
     date: format(new Date(), "yyyy-MM-dd"),
     errors: {},
+    isEditing: false,
   };
+
+  componentDidMount() {
+    this.getSelectedTransaction();
+  }
+
+  getSelectedTransaction() {
+    const { selectedTransaction } = this.props;
+    if (selectedTransaction) {
+      this.setState({
+        description: selectedTransaction.description,
+        amount: selectedTransaction.amount,
+        category: selectedTransaction.category.id,
+        date: selectedTransaction.date,
+        isEditing: true,
+      });
+    }
+  }
 
   handleSubmit = async (e) => {
     e.preventDefault();
+    const { selectedTransaction } = this.props;
+    let postData = {};
+
     const validation = this.validateForm();
     if (!validation) {
       return;
     }
 
-    const postData = {
-      userId: 1,
-      description: this.state.description,
-      amount: parseFloat(this.state.amount),
-      categoryId: parseInt(this.state.category),
-      date: this.state.date,
-      location: "",
-      payeeName: "Jaya Grocer",
-    };
+    if (selectedTransaction === null) {
+      postData = {
+        userId: 1,
+        description: this.state.description,
+        amount: parseFloat(this.state.amount),
+        categoryId: parseInt(this.state.category),
+        date: this.state.date,
+        location: "",
+        payeeName: "Jaya Grocer",
+      };
 
-    await createTransaction(postData);
-    this.props.closeModal();
-    this.props.updateData();
+      await createTransaction(postData);
+      this.props.closeModal();
+      this.props.updateData();
+    } else {
+      const transactionId = selectedTransaction.id;
+      postData = {
+        id: transactionId,
+        userId: 1,
+        description: this.state.description,
+        amount: parseFloat(this.state.amount),
+        categoryId: parseInt(this.state.category),
+        date: this.state.date,
+        location: "",
+        payeeName: "Jaya Grocer",
+      };
+
+      await updateTransaction(postData, transactionId);
+      this.props.closeModal();
+      this.props.updateData();
+    }
   };
 
   validateForm = () => {
@@ -90,7 +132,14 @@ class TransactionForm extends Component {
 
   render() {
     const { categories, closeModal } = this.props;
-    const { description, amount, category, date, errors } = this.state;
+    const {
+      description,
+      amount,
+      category,
+      date,
+      errors,
+      isEditing,
+    } = this.state;
     return (
       <div className='transaction-form-wrapper'>
         <form noValidate autoComplete='off'>
@@ -162,10 +211,10 @@ class TransactionForm extends Component {
           </MuiPickersUtilsProvider>
           <div className='form-actions'>
             <Button onClick={closeModal} color='primary'>
-              Cancel
+              {!isEditing ? "Cancel" : "Delete"}
             </Button>
             <Button onClick={this.handleSubmit} color='primary'>
-              Add
+              {!isEditing ? "Add" : "Save"}
             </Button>
           </div>
         </form>
