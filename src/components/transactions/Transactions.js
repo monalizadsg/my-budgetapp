@@ -29,6 +29,15 @@ class Transactions extends Component {
     });
   }
 
+  updateData = async () => {
+    const { pageSize, currentPage } = this.state;
+    const data = await getTransactions(currentPage, pageSize);
+    const { transactions } = data;
+    this.setState({
+      data: transactions,
+    });
+  };
+
   openModal = () => {
     this.setState({ isOpen: true });
   };
@@ -60,6 +69,7 @@ class Transactions extends Component {
               categories={categories}
               onSave={this.handleClickOnAdd}
               closeModal={this.closeModal}
+              updateData={this.updateData}
             />
           </DialogContent>
         </Dialog>

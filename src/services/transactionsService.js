@@ -24,4 +24,17 @@ export async function getCategories() {
   return response.data.categories;
 }
 
-export default { getTransactions, getCategories };
+export async function createTransaction(data) {
+  let response;
+  try {
+    response = await axios.post(
+      "http://192.168.0.188:8086/api/v1/transactions",
+      data
+    );
+  } catch (err) {
+    console.log(err.message);
+  }
+  console.log("Returned postData:", response);
+}
+
+export default { getTransactions, getCategories, createTransaction };

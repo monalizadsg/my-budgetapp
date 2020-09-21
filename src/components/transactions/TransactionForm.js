@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./TransactionForm.scss";
 import { format } from "date-fns";
+import { createTransaction } from "../../services/transactionsService";
 import {
   TextField,
   FormControl,
@@ -25,22 +26,26 @@ class TransactionForm extends Component {
     errors: {},
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
     const validation = this.validateForm();
     if (!validation) {
       return;
     }
 
-    // const postData = {
-    //   userId: 1,
-    //   description: this.state.description,
-    //   amount: parseFloat(this.state.amount),
-    //   categoryId: parseInt(this.state.category),
-    //   date: this.state.date,
-    //   location: "",
-    //   payeeName: "Jaya Grocer",
-    // };
+    const postData = {
+      userId: 1,
+      description: this.state.description,
+      amount: parseFloat(this.state.amount),
+      categoryId: parseInt(this.state.category),
+      date: this.state.date,
+      location: "",
+      payeeName: "Jaya Grocer",
+    };
+
+    await createTransaction(postData);
+    this.props.closeModal();
+    this.props.updateData();
   };
 
   validateForm = () => {
@@ -84,11 +89,11 @@ class TransactionForm extends Component {
   };
 
   render() {
-    const { categories, onSave, closeModal } = this.props;
+    const { categories, closeModal } = this.props;
     const { description, amount, category, date, errors } = this.state;
     return (
       <div className='transaction-form-wrapper'>
-        <form noValidate autoComplete='off' onSubmit={onSave}>
+        <form noValidate autoComplete='off'>
           <TextField
             id='description'
             name='description'
