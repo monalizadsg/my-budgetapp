@@ -4,14 +4,6 @@
   height: 100%;
   padding-left: 20px;
 
-  .MuiPaper-root.MuiDialog-paper {
-    padding: 30px;
-  }
-
-  .MuiDialogActions-root {
-    padding: 12px 24px;
-  }
-
   .header {
     display: flex;
     justify-content: space-between;
@@ -30,8 +22,10 @@
       cursor: pointer;
     }
   }
+}
 
-  .list {
-    // border: orange 1px solid;
-  }
+.MuiTypography-h6 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

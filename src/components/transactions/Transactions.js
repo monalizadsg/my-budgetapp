@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
 import {
@@ -16,6 +24,7 @@ class Transactions extends Component {
     totalPages: 0,
     currentPage: 0,
     pageSize: 5,
+    selectedTransaction: null,
   };
 
   async componentDidMount() {
@@ -43,18 +52,28 @@ class Transactions extends Component {
   };
 
   closeModal = () => {
-    this.setState({ isOpen: false });
+    this.setState({ isOpen: false, selectedTransaction: null });
   };
+
+  onClickTransaction = (transaction) => {
+    this.setState({ selectedTransaction: transaction }, () => {
+      this.setState({ isOpen: true });
+    });
+  };
+
   render() {
-    const { categories, data } = this.state;
+    const { categories, data, selectedTransaction } = this.state;
     return (
       <div className='transaction-container'>
         <div className='header'>
           <h2>Transactions</h2>
           <button onClick={this.openModal}>+ Add Transactions</button>
         </div>
-        <div className='list'>
-          <TransactionList data={data} />
+        <div>
+          <TransactionList
+            data={data}
+            onClickTransaction={this.onClickTransaction}
+          />
         </div>
         <Dialog
           open={this.state.isOpen}
@@ -63,13 +82,29 @@ class Transactions extends Component {
           maxWidth='xs'
           disableBackdropClick
         >
-          <DialogTitle>Transaction</DialogTitle>
+          <DialogTitle>
+            {!selectedTransaction ? (
+              <Typography variant='h6'>Add Transaction</Typography>
+            ) : (
+              <>
+                <Typography variant='h6'>Edit/Delete Transaction</Typography>{" "}
+                <IconButton
+                  edge='end'
+                  color='inherit'
+                  onClick={this.closeModal}
+                  aria-label='close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </>
+            )}
+          </DialogTitle>
           <DialogContent>
             <TransactionForm
               categories={categories}
-              onSave={this.handleClickOnAdd}
               closeModal={this.closeModal}
               updateData={this.updateData}
+              selectedTransaction={selectedTransaction}
             />
           </DialogContent>
         </Dialog>
