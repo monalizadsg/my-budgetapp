@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import {
   createTransaction,
   updateTransaction,
+  deleteTransaction,
 } from "../../services/transactionsService";
 import {
   TextField,
@@ -13,6 +14,11 @@ import {
   MenuItem,
   Button,
   FormHelperText,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -28,6 +34,7 @@ class TransactionForm extends Component {
     date: format(new Date(), "yyyy-MM-dd"),
     errors: {},
     isEditing: false,
+    openConfirmDialog: false,
   };
 
   componentDidMount() {
@@ -90,6 +97,22 @@ class TransactionForm extends Component {
     }
   };
 
+  showConfirmDialog = () => {
+    this.setState({ openConfirmDialog: true });
+  };
+
+  closeConfirmDialog = () => {
+    this.setState({ openConfirmDialog: false });
+    this.props.closeModal();
+  };
+
+  handleDelete = async () => {
+    const transactionId = this.props.selectedTransaction.id;
+    await deleteTransaction(transactionId);
+    this.props.updateData();
+    this.props.closeModal();
+  };
+
   validateForm = () => {
     const { description, amount, category, date } = this.state;
     let errors = {};
@@ -139,88 +162,142 @@ class TransactionForm extends Component {
       date,
       errors,
       isEditing,
+      openConfirmDialog,
     } = this.state;
+
+    const transaction = {
+      description: description,
+      amount: amount,
+      date: date,
+    };
     return (
-      <div className='transaction-form-wrapper'>
-        <form noValidate autoComplete='off'>
-          <TextField
-            id='description'
-            name='description'
-            size='medium'
-            label='Description'
-            variant='outlined'
-            value={description}
-            onChange={this.handleInputChange}
-            error={errors.description}
-            helperText={errors.description}
-          />
-          <TextField
-            type='number'
-            id='amount'
-            name='amount'
-            size='medium'
-            label='Amount'
-            variant='outlined'
-            value={amount}
-            onChange={this.handleInputChange}
-            error={errors.amount}
-            helperText={errors.amount}
-          />
-          <FormControl
-            variant='outlined'
-            style={{ minWidth: "200px" }}
-            size='medium'
-            error={errors.category}
-          >
-            <InputLabel htmlFor='category'>Category</InputLabel>
-            <Select
-              label='Category'
-              name='category'
-              id='category'
-              value={category}
-              onChange={this.handleInputChange}
-            >
-              <MenuItem value='' disabled />
-              {categories &&
-                categories.map((category) => {
-                  return (
-                    <MenuItem key={category.id} value={category.id}>
-                      {category.name}
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-            {errors.category && (
-              <FormHelperText>{errors.category}</FormHelperText>
-            )}
-          </FormControl>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              autoOk
-              variant='inline'
+      <>
+        <div className='transaction-form-wrapper'>
+          <form noValidate autoComplete='off'>
+            <TextField
+              id='description'
+              name='description'
               size='medium'
-              inputVariant='outlined'
-              label='Date'
-              format='yyyy/MM/dd'
-              value={date}
-              InputAdornmentProps={{ position: "start" }}
-              onChange={(date) => this.handleDateChange(date)}
-              error={errors.date}
-              helperText={errors.date}
+              label='Description'
+              variant='outlined'
+              value={description}
+              onChange={this.handleInputChange}
+              error={errors.description}
+              helperText={errors.description}
             />
-          </MuiPickersUtilsProvider>
-          <div className='form-actions'>
-            <Button onClick={closeModal} color='primary'>
-              {!isEditing ? "Cancel" : "Delete"}
-            </Button>
-            <Button onClick={this.handleSubmit} color='primary'>
-              {!isEditing ? "Add" : "Save"}
-            </Button>
-          </div>
-        </form>
-      </div>
+            <TextField
+              type='number'
+              id='amount'
+              name='amount'
+              size='medium'
+              label='Amount'
+              variant='outlined'
+              value={amount}
+              onChange={this.handleInputChange}
+              error={errors.amount}
+              helperText={errors.amount}
+            />
+            <FormControl
+              variant='outlined'
+              style={{ minWidth: "200px" }}
+              size='medium'
+              error={errors.category}
+            >
+              <InputLabel htmlFor='category'>Category</InputLabel>
+              <Select
+                label='Category'
+                name='category'
+                id='category'
+                value={category}
+                onChange={this.handleInputChange}
+              >
+                <MenuItem value='' disabled />
+                {categories &&
+                  categories.map((category) => {
+                    return (
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+              {errors.category && (
+                <FormHelperText>{errors.category}</FormHelperText>
+              )}
+            </FormControl>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                autoOk
+                variant='inline'
+                size='medium'
+                inputVariant='outlined'
+                label='Date'
+                format='yyyy/MM/dd'
+                value={date}
+                InputAdornmentProps={{ position: "start" }}
+                onChange={(date) => this.handleDateChange(date)}
+                error={errors.date}
+                helperText={errors.date}
+              />
+            </MuiPickersUtilsProvider>
+            <div className='form-actions'>
+              {!isEditing ? (
+                <>
+                  <Button onClick={closeModal} color='primary'>
+                    Cancel
+                  </Button>
+                  <Button onClick={this.handleSubmit} color='primary'>
+                    Add
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button onClick={this.showConfirmDialog} color='primary'>
+                    Delete
+                  </Button>
+                  <Button onClick={this.handleSubmit} color='primary'>
+                    Save
+                  </Button>
+                </>
+              )}
+            </div>
+          </form>
+        </div>
+        <ConfirmDialog
+          isOpen={openConfirmDialog}
+          onClose={this.closeConfirmDialog}
+          selectedTransaction={transaction}
+          onDelete={this.handleDelete}
+        />
+      </>
     );
   }
 }
+
+const ConfirmDialog = ({ isOpen, onClose, selectedTransaction, onDelete }) => {
+  const selected = selectedTransaction;
+  return (
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle id='alert-dialog-title'>
+        Are you sure you want to delete this transaction?
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          <p> Description: {selected.description}</p>
+          <p> Amount: {selected.amount}</p>
+          <p> Date: {selected.date}</p>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color='primary'>
+          No
+        </Button>
+        <Button onClick={onDelete} color='primary' autoFocus>
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
 export default TransactionForm;
