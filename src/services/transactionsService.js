@@ -34,7 +34,7 @@ export async function createTransaction(data) {
   } catch (err) {
     console.log(`Axios post request failed: ${err}`);
   }
-  console.log("Returned postData:", response);
+  // console.log("Returned postData:", response);
 }
 
 export async function updateTransaction(data, id) {
@@ -47,7 +47,19 @@ export async function updateTransaction(data, id) {
   } catch (err) {
     console.log(`Axios put request failed: ${err}`);
   }
-  console.log("Returned updateData:", response);
+  // console.log("Returned updateData:", response);
+}
+
+export async function deleteTransaction(id) {
+  let response;
+  try {
+    response = await axios.delete(
+      `http://192.168.0.188:8086/api/v1/transactions/${id}`
+    );
+  } catch (err) {
+    console.log(`Axios delete request failed: ${err}`);
+  }
+  // console.log("Returned deleteData:", response);
 }
 
 export default {
@@ -55,4 +67,5 @@ export default {
   getCategories,
   createTransaction,
   updateTransaction,
+  deleteTransaction,
 };
