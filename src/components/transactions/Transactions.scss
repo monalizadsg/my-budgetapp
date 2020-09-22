@@ -22,6 +22,12 @@
       cursor: pointer;
     }
   }
+
+  .paginatiton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
 }
 
 .MuiTypography-h6 {
