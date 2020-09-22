@@ -6,6 +6,7 @@ import {
   IconButton,
   Typography,
 } from "@material-ui/core";
+import Pagination from "@material-ui/lab/Pagination";
 import CloseIcon from "@material-ui/icons/Close";
 
 import TransactionForm from "./TransactionForm";
@@ -22,14 +23,15 @@ class Transactions extends Component {
     data: [],
     categories: [],
     totalPages: 0,
-    currentPage: 0,
+    currentPage: 1,
     pageSize: 5,
     selectedTransaction: null,
   };
 
   async componentDidMount() {
     const { pageSize, currentPage } = this.state;
-    const data = await getTransactions(currentPage, pageSize);
+    const page = currentPage - 1;
+    const data = await getTransactions(page, pageSize);
     const categories = await getCategories();
     this.setState({
       data: data.transactions,
@@ -40,7 +42,8 @@ class Transactions extends Component {
 
   updateData = async () => {
     const { pageSize, currentPage } = this.state;
-    const data = await getTransactions(currentPage, pageSize);
+    const page = currentPage - 1;
+    const data = await getTransactions(page, pageSize);
     const { transactions } = data;
     this.setState({
       data: transactions,
@@ -61,8 +64,25 @@ class Transactions extends Component {
     });
   };
 
+  handlePageChange = (event, value) => {
+    this.setState(
+      {
+        currentPage: value,
+      },
+      () => {
+        this.updateData();
+      }
+    );
+  };
+
   render() {
-    const { categories, data, selectedTransaction } = this.state;
+    const {
+      categories,
+      data,
+      selectedTransaction,
+      totalPages,
+      currentPage,
+    } = this.state;
     return (
       <div className='transaction-container'>
         <div className='header'>
@@ -73,6 +93,15 @@ class Transactions extends Component {
           <TransactionList
             data={data}
             onClickTransaction={this.onClickTransaction}
+          />
+        </div>
+        <div className='paginatiton'>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={this.handlePageChange}
+            variant='outlined'
+            shape='rounded'
           />
         </div>
         <Dialog
