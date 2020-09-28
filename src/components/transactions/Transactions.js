@@ -9,8 +9,11 @@ import {
 import Pagination from "@material-ui/lab/Pagination";
 import CloseIcon from "@material-ui/icons/Close";
 
+import { format, startOfWeek, endOfWeek } from "date-fns";
+
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
+import DateRangeDropdown from "./../common/DateRangeDropdown";
 import {
   getTransactions,
   getCategories,
@@ -25,13 +28,17 @@ class Transactions extends Component {
     totalPages: 0,
     currentPage: 1,
     pageSize: 5,
+    selectedDateRange: {
+      id: 1,
+      startDate: format(startOfWeek(new Date()), "yyyy-MM-dd"),
+      endDate: format(endOfWeek(new Date()), "yyyy-MM-dd"),
+    },
     selectedTransaction: null,
   };
 
   async componentDidMount() {
-    const { pageSize, currentPage } = this.state;
-    const page = currentPage - 1;
-    const data = await getTransactions(page, pageSize);
+    const { startDate, endDate } = this.state.selectedDateRange;
+    const data = await getTransactions(startDate, endDate);
     const categories = await getCategories();
     this.setState({
       data: data.transactions,
@@ -42,8 +49,9 @@ class Transactions extends Component {
 
   updateData = async () => {
     const { pageSize, currentPage } = this.state;
+    const { startDate, endDate } = this.state.selectedDateRange;
     const page = currentPage - 1;
-    const data = await getTransactions(page, pageSize);
+    const data = await getTransactions(startDate, endDate, page, pageSize);
     const { transactions } = data;
     this.setState({
       data: transactions,
@@ -75,6 +83,15 @@ class Transactions extends Component {
     );
   };
 
+  filterData = async (range) => {
+    const data = await getTransactions(range.startDate, range.endDate);
+    this.setState({
+      data: data.transactions,
+      totalPages: data.totalPages,
+      selectedDateRange: range,
+    });
+  };
+
   render() {
     const {
       categories,
@@ -82,12 +99,20 @@ class Transactions extends Component {
       selectedTransaction,
       totalPages,
       currentPage,
+      selectedDateRange,
     } = this.state;
     return (
       <div className='transaction-container'>
         <div className='header'>
           <h2>Transactions</h2>
-          <button onClick={this.openModal}>+ Add Transactions</button>
+          <div>
+            <DateRangeDropdown
+              onFilter={this.filterData}
+              startDate={selectedDateRange.startDate}
+              endDate={selectedDateRange.endDate}
+            />
+            <button onClick={this.openModal}>+ Add</button>
+          </div>
         </div>
         <div>
           <TransactionList
@@ -96,13 +121,15 @@ class Transactions extends Component {
           />
         </div>
         <div className='paginatiton'>
-          <Pagination
-            count={totalPages}
-            page={currentPage}
-            onChange={this.handlePageChange}
-            variant='outlined'
-            shape='rounded'
-          />
+          {data.length > 0 && totalPages > 1 && (
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={this.handlePageChange}
+              variant='outlined'
+              shape='rounded'
+            />
+          )}
         </div>
         <Dialog
           open={this.state.isOpen}
