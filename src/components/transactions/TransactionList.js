@@ -69,7 +69,15 @@ class TransactionList extends Component {
         </React.Fragment>
       );
     });
-    return <div>{result}</div>;
+    return (
+      <div>
+        {data.length > 0 ? (
+          result
+        ) : (
+          <div className='empty-card'>No record found</div>
+        )}
+      </div>
+    );
   }
 }
 
