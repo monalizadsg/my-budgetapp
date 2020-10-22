@@ -3,16 +3,16 @@ import { Route, Switch } from "react-router-dom";
 import "./App.css";
 import Header from "./components/common/Header";
 import Main from "./components/Main";
-import Transactions from "./components/transactions/transactions";
+import Transactions from "./components/transactions/Transactions";
 
 function App() {
   return (
     <React.Fragment>
       <Header />
-      <Switch>
+      <Main />
+      {/* <Switch>
         <Route path='/' exact component={Main} />
-        <Route path='/transactions' component={Transactions} />
-      </Switch>
+      </Switch> */}
     </React.Fragment>
   );
 }
