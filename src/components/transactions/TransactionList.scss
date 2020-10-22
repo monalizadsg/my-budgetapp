@@ -1,56 +1,58 @@
-.card {
-  // border: green solid 1px;
-  margin-top: 20px;
+.transaction-list {
+  .transaction-list-card {
+    // border: green solid 1px;
+    margin-top: 20px;
 
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    align-items: flex-end;
-    padding: 0 20px;
-    font-size: 15px;
-    font-weight: 500;
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      align-items: flex-end;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 500;
 
-    .item-date {
-      color: #b1b1b1;
-    }
-  }
-
-  .card-item {
-    // border: red 1px solid;
-    border-radius: 6px;
-    border: 1px solid #e5e9ed;
-    transition: box-shadow 0.2s;
-
-    &:hover {
-      cursor: pointer;
-      box-shadow: 0 4px 10px 0 rgba(93, 130, 170, 0.21);
-      border: 1px solid rgba(108, 123, 138, 0.2);
-    }
-  }
-
-  .list-item {
-    // border: red 1px solid;
-    display: flex;
-    justify-content: space-between;
-
-    .item-title {
-      font-weight: 400;
-      color: #262626;
+      .item-date {
+        color: #b1b1b1;
+      }
     }
 
-    .item-subcategory {
-      font-size: 14px;
+    .card-item {
+      // border: red 1px solid;
+      border-radius: 6px;
+      border: 1px solid #e5e9ed;
+      transition: box-shadow 0.2s;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 10px 0 rgba(93, 130, 170, 0.21);
+        border: 1px solid rgba(108, 123, 138, 0.2);
+      }
     }
-  }
 
-  .MuiList-padding {
-    padding-top: 2px;
-    padding-bottom: 2px;
-  }
+    .list-item {
+      // border: red 1px solid;
+      display: flex;
+      justify-content: space-between;
 
-  .MuiPaper-rounded {
-    margin-bottom: 10px;
+      .item-title {
+        font-weight: 400;
+        color: #262626;
+      }
+
+      .item-subcategory {
+        font-size: 14px;
+      }
+    }
+
+    .MuiList-padding {
+      padding-top: 2px;
+      padding-bottom: 2px;
+    }
+
+    .MuiPaper-rounded {
+      margin-bottom: 10px;
+    }
   }
 }
 

@@ -283,9 +283,11 @@ const ConfirmDialog = ({ isOpen, onClose, selectedTransaction, onDelete }) => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          <p> Description: {selected.description}</p>
-          <p> Amount: {selected.amount}</p>
-          <p> Date: {selected.date}</p>
+          <div>
+            <p>Description: {selected.description}</p>
+            <p>Amount: {selected.amount}</p>
+            <p>Date: {selected.date}</p>
+          </div>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

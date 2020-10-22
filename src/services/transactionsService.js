@@ -8,64 +8,27 @@ export async function getTransactions(
   page = 0,
   pageSize = 5
 ) {
-  let response;
-  try {
-    response = await axios.get(
-      `${url}/api/v1/transactions?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`
-    );
-    // console.log(response);
-  } catch (err) {
-    console.log(err.message);
-  }
+  const response = await axios.get(
+    `${url}/api/v1/transactions/paged?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`
+  );
   return response.data;
 }
 
 export async function getCategories() {
-  let response;
-  try {
-    response = await axios.get(`${url}/api/v1/categories`);
-  } catch (err) {
-    console.log(err.message);
-  }
-  return response.data.categories;
+  const response = await axios.get(`${url}/api/v1/categories`);
+  return response.data;
 }
 
 export async function createTransaction(data) {
-  let response;
-  try {
-    response = await axios.post(
-      "http://192.168.0.188:8086/api/v1/transactions",
-      data
-    );
-  } catch (err) {
-    console.log(`Axios post request failed: ${err}`);
-  }
-  // console.log("Returned postData:", response);
+  return await axios.post(`${url}/api/v1/transactions`, data);
 }
 
 export async function updateTransaction(data, id) {
-  let response;
-  try {
-    response = await axios.put(
-      `http://192.168.0.188:8086/api/v1/transactions/${id}`,
-      data
-    );
-  } catch (err) {
-    console.log(`Axios put request failed: ${err}`);
-  }
-  // console.log("Returned updateData:", response);
+  return await axios.put(`${url}/api/v1/transactions/${id}`, data);
 }
 
 export async function deleteTransaction(id) {
-  let response;
-  try {
-    response = await axios.delete(
-      `http://192.168.0.188:8086/api/v1/transactions/${id}`
-    );
-  } catch (err) {
-    console.log(`Axios delete request failed: ${err}`);
-  }
-  // console.log("Returned deleteData:", response);
+  return await axios.delete(`${url}/api/v1/transactions/${id}`);
 }
 
 export default {
