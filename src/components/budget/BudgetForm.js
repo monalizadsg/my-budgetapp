@@ -18,20 +18,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import teal from "@material-ui/core/colors/teal";
-import { createMuiTheme } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/styles";
 import "./BudgetForm.scss";
 
 import { createBudget } from "../../services/budgetService";
-
-const defaultMaterialTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: teal[500],
-    },
-  },
-});
 
 const periodRange = {
   WEEKLY: "Weekly",
@@ -238,38 +227,34 @@ const CustomDateRangeDialog = ({
       </DialogTitle>
       <DialogContent>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ThemeProvider theme={defaultMaterialTheme}>
-            <KeyboardDatePicker
-              autoOk
-              variant='inline'
-              size='medium'
-              inputVariant='outlined'
-              label='Start Date'
-              format='yyyy/MM/dd'
-              value={startDate}
-              InputAdornmentProps={{ position: "start" }}
-              onChange={onStartDateChange}
-              // error={errors.date}
-              // helperText={errors.date}
-            />
-          </ThemeProvider>
+          <KeyboardDatePicker
+            autoOk
+            variant='inline'
+            size='medium'
+            inputVariant='outlined'
+            label='Start Date'
+            format='yyyy/MM/dd'
+            value={startDate}
+            InputAdornmentProps={{ position: "start" }}
+            onChange={onStartDateChange}
+            // error={errors.date}
+            // helperText={errors.date}
+          />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ThemeProvider theme={defaultMaterialTheme}>
-            <KeyboardDatePicker
-              autoOk
-              variant='inline'
-              size='medium'
-              inputVariant='outlined'
-              label='End Date'
-              format='yyyy/MM/dd'
-              value={endDate}
-              InputAdornmentProps={{ position: "start" }}
-              onChange={onEndDateChange}
-              // error={errors.date}
-              // helperText={errors.date}
-            />
-          </ThemeProvider>
+          <KeyboardDatePicker
+            autoOk
+            variant='inline'
+            size='medium'
+            inputVariant='outlined'
+            label='End Date'
+            format='yyyy/MM/dd'
+            value={endDate}
+            InputAdornmentProps={{ position: "start" }}
+            onChange={onEndDateChange}
+            // error={errors.date}
+            // helperText={errors.date}
+          />
         </MuiPickersUtilsProvider>
       </DialogContent>
       <DialogActions>
