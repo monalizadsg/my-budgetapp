@@ -33,38 +33,42 @@ class TransactionList extends Component {
 
       return (
         <React.Fragment key={index}>
-          <div className='card'>
-            <div className='card-header'>
-              <div className='item-date'>{date}</div>
-              <div className='item-total'>{totalAmount}</div>
-            </div>
+          <div className='transaction-list'>
+            <div className='transaction-list-card'>
+              <div className='card-header'>
+                <div className='item-date'>{date}</div>
+                <div className='item-total'>{totalAmount}</div>
+              </div>
 
-            {value.map((item) => {
-              const categoryType = item.category.type;
-              const amountStyle = {
-                color: categoryType === "INCOME" ? "#1dc29f" : "#fe3b2c",
-                fontWeight: "500",
-              };
-              return (
-                <Card className='card-item'>
-                  <List
-                    className='list'
-                    key={item.id}
-                    onClick={() => onClickTransaction(item)}
-                  >
-                    <ListItem className='list-item'>
-                      <div className='item'>
-                        <h4 className='item-title'>{item.description}</h4>
-                        <p className='item-subcategory'>{item.category.name}</p>
-                      </div>
-                      <div className='item' style={amountStyle}>
-                        {item.amount}
-                      </div>
-                    </ListItem>
-                  </List>
-                </Card>
-              );
-            })}
+              {value.map((item) => {
+                const categoryType = item.category.type;
+                const amountStyle = {
+                  color: categoryType === "INCOME" ? "#1dc29f" : "#fe3b2c",
+                  fontWeight: "500",
+                };
+                return (
+                  <Card key={item.id} className='card-item'>
+                    <List
+                      className='list'
+                      key={item.id}
+                      onClick={() => onClickTransaction(item)}
+                    >
+                      <ListItem className='list-item'>
+                        <div className='item'>
+                          <h4 className='item-title'>{item.description}</h4>
+                          <p className='item-subcategory'>
+                            {item.category.name}
+                          </p>
+                        </div>
+                        <div className='item' style={amountStyle}>
+                          {item.amount}
+                        </div>
+                      </ListItem>
+                    </List>
+                  </Card>
+                );
+              })}
+            </div>
           </div>
         </React.Fragment>
       );
