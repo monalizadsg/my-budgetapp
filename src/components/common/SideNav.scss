@@ -1,28 +1,30 @@
 .side-nav-container {
   float: left;
   width: 20%;
-  // border: 1px solid green;
 
   .side-navbar-list {
     list-style-type: none;
   }
 
   .side-navbar-item {
-    font-size: 16px;
-    padding: 16px 0;
-    line-height: 1em;
-    border-radius: 5px;
+    width: 100%;
+    padding: 12px 0;
 
-    .side-nav-link {
+    a {
+      width: 100%;
       text-decoration: none;
+      font-size: 16px;
+      padding: 10px 16px;
+
+      border-radius: 5px;
     }
 
     .icon {
       margin-right: 10px;
     }
   }
-  .side-navbar-item:hover,
-  .side-navbar-item:active {
+
+  .active {
     background-color: #f1f1f1;
     color: #000;
   }

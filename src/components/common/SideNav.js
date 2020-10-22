@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   faClipboard,
   faBullseye,
@@ -14,22 +14,22 @@ const SideNav = () => {
       <nav className='side-navbar'>
         <ul className='side-navbar-list'>
           <li className='side-navbar-item'>
-            <Link to='/' className='side-nav-link'>
+            <NavLink exact to='/' activeClassName='active'>
               <FontAwesomeIcon className='icon' icon={faClipboard} />
               Transactions
-            </Link>
+            </NavLink>
           </li>
           <li className='side-navbar-item'>
-            <Link to='/transactions' className='side-nav-link'>
+            <NavLink to='/budget' activeClassName='active'>
               <FontAwesomeIcon className='icon' icon={faBullseye} />
               Budget
-            </Link>
+            </NavLink>
           </li>
           <li className='side-navbar-item'>
-            <Link to='/transactions' className='side-nav-link'>
+            <NavLink to='/transactions' activeClassName='active'>
               <FontAwesomeIcon className='icon' icon={faCog} />
               Settings
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>
