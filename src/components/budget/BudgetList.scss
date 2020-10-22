@@ -1,0 +1,115 @@
+//same with trnx list
+.budget-list {
+  .budget-list-card {
+    // border: green solid 1px;
+    margin-top: 20px;
+
+    .card-header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 500;
+
+      .item-date {
+        color: #b1b1b1;
+      }
+    }
+
+    .card-item {
+      // border: red 1px solid;
+      border-radius: 6px;
+      border: 1px solid #e5e9ed;
+      transition: box-shadow 0.2s;
+      // height: 120px;
+
+      &:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 10px 0 rgba(93, 130, 170, 0.21);
+        border: 1px solid rgba(108, 123, 138, 0.2);
+      }
+
+      .MuiList-padding {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+
+    .list-item {
+      // border: red 1px solid;
+      display: flex;
+      flex-direction: column;
+
+      // flex-direction: column;
+
+      .details {
+        width: 100%;
+        // border: solid 1px green;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .item-title {
+          font-weight: 400;
+          color: #262626;
+        }
+
+        .item-amount {
+          text-align: end;
+        }
+      }
+
+      .sub-details {
+        width: 100%;
+        margin-top: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .left {
+          width: 40px;
+          height: 40px;
+          background-color: pink;
+          border-radius: 50%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+
+        .right {
+          display: flex;
+          flex-direction: column;
+          width: 85%;
+          .progress-bar {
+            // border: 2px solid orange;
+            width: 100%;
+            margin-top: 10px;
+
+            .tooltip {
+              border: 1px solid red;
+            }
+          }
+          .amount-left {
+            display: flex;
+            align-self: flex-end;
+            font-size: 14px;
+          }
+        }
+      }
+    }
+
+    // .MuiList-padding {
+    //   padding-top: 2px;
+    //   padding-bottom: 2px;
+    // }
+
+    .MuiPaper-rounded {
+      margin-bottom: 10px;
+    }
+  }
+}
