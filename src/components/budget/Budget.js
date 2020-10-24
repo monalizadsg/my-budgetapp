@@ -1,23 +1,31 @@
 import React, { Component } from "react";
 import BudgetForm from "./BudgetForm";
 import { getCategories } from "../../services/transactionsService";
-import { getBudgets } from "../../services/budgetService";
+import { getBudgets, getBudgetBalances } from "../../services/budgetService";
 import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
 import "./Budget.scss";
 import BudgetList from "./BudgetList";
+import PeriodTypeDropdown from "../common/PeriodTypeDropdown";
+import { format } from "date-fns";
 
 class Budget extends Component {
   state = {
-    budgets: [],
+    budgetBalances: [],
     categories: [],
     isOpen: false,
+    selectedPeriodType: {
+      id: 1,
+      type: "Weekly",
+      startDate: format(new Date(), "yyyy-MM-dd"),
+    },
   };
 
   async componentDidMount() {
+    const { type, startDate } = this.state.selectedPeriodType;
     const categories = await getCategories();
-    const budgets = await getBudgets();
+    const budgetBalances = await getBudgetBalances(type, startDate);
     this.setState({
-      budgets: budgets.data,
+      budgetBalances: budgetBalances.data,
       categories,
     });
   }
@@ -30,14 +38,25 @@ class Budget extends Component {
     this.setState({ isOpen: false });
   };
 
+  filterBudget = async (period) => {
+    const startDate = format(new Date(), "yyyy-MM-dd");
+    const periodType = period.type.toLowerCase();
+    const budgetBalances = await getBudgetBalances(periodType, startDate);
+    this.setState({
+      budgetBalances: budgetBalances.data,
+      selectedPeriodType: period,
+    });
+  };
+
   render() {
     return (
       <div className='budget-container'>
         <div className='header'>
           <h2>Budget</h2>
+          <PeriodTypeDropdown onFilter={this.filterBudget} />
           <button onClick={this.openModal}>+ Add</button>
         </div>
-        <BudgetList data={this.state.budgets} />
+        <BudgetList data={this.state.budgetBalances} />
         <Dialog
           open={this.state.isOpen}
           onClose={this.closeModal}
