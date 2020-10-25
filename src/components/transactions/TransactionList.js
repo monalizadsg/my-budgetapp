@@ -25,11 +25,17 @@ class TransactionList extends Component {
   render() {
     const { data, onClickTransaction } = this.props;
     const dataByDate = groupBy(data, "date");
+
     const result = Object.entries(dataByDate).map(([key, value], index) => {
       // console.log({ key, value });
       const now = format(new Date(), "yyyy-MM-dd");
       const date = key === now ? "Today" : format(new Date(key), "dd MMM yyyy");
       const totalAmount = this.computeTotal(value);
+      const amountFormatter = new Intl.NumberFormat("ms-MY", {
+        style: "currency",
+        currency: "MYR",
+        minimumFractionDigits: 2,
+      });
 
       return (
         <React.Fragment key={index}>
@@ -47,6 +53,8 @@ class TransactionList extends Component {
                   color: categoryType === "INCOME" ? "#1dc29f" : "#fe3b2c",
                   fontWeight: "500",
                 };
+                const amountItem =
+                  categoryType === "INCOME" ? item.amount : -item.amount;
                 return (
                   <Card key={item.id} className='card-item'>
                     <List
@@ -62,12 +70,11 @@ class TransactionList extends Component {
                           </p>
                         </div>
                         <div className='item' style={amountStyle}>
-                          {item.amount}
+                          {amountFormatter.format(amountItem)}
                         </div>
                       </ListItem>
-                    
                     </List>
-                    {index < value.length ? <Divider/> : null }
+                    {index < value.length ? <Divider /> : null}
                   </Card>
                 );
               })}
