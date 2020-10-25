@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { format } from "date-fns";
 import groupBy from "lodash/groupBy";
-import { Card, List, ListItem } from "@material-ui/core";
+import { Card, List, ListItem, Divider } from "@material-ui/core";
 import "./TransactionList.scss";
 
 class TransactionList extends Component {
@@ -28,7 +28,7 @@ class TransactionList extends Component {
     const result = Object.entries(dataByDate).map(([key, value], index) => {
       // console.log({ key, value });
       const now = format(new Date(), "yyyy-MM-dd");
-      const date = key === now ? "Today" : format(new Date(key), "MM/dd/yyyy");
+      const date = key === now ? "Today" : format(new Date(key), "dd MMM yyyy");
       const totalAmount = this.computeTotal(value);
 
       return (
@@ -40,7 +40,8 @@ class TransactionList extends Component {
                 <div className='item-total'>{totalAmount}</div>
               </div>
 
-              {value.map((item) => {
+              {value.map((item, index) => {
+                console.log(index, value.length);
                 const categoryType = item.category.type;
                 const amountStyle = {
                   color: categoryType === "INCOME" ? "#1dc29f" : "#fe3b2c",
@@ -64,7 +65,9 @@ class TransactionList extends Component {
                           {item.amount}
                         </div>
                       </ListItem>
+                    
                     </List>
+                    {index < value.length ? <Divider/> : null }
                   </Card>
                 );
               })}
