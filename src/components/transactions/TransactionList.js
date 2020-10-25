@@ -49,7 +49,6 @@ class TransactionList extends Component {
               </div>
 
               {value.map((item, index) => {
-                console.log(index, value.length);
                 const categoryType = item.category.type;
                 const amountStyle = {
                   color: categoryType === "INCOME" ? "#1dc29f" : "#fe3b2c",
