@@ -43,7 +43,9 @@ class TransactionList extends Component {
             <div className='transaction-list-card'>
               <div className='card-header'>
                 <div className='item-date'>{date}</div>
-                <div className='item-total'>{totalAmount}</div>
+                <div className='item-total'>
+                  {amountFormatter.format(totalAmount)}
+                </div>
               </div>
 
               {value.map((item, index) => {
