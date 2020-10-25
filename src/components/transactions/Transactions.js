@@ -27,7 +27,7 @@ class Transactions extends Component {
     categories: [],
     totalPages: 0,
     currentPage: 1,
-    pageSize: 5,
+    pageSize: 10,
     selectedDateRange: {
       id: 1,
       startDate: format(startOfWeek(new Date()), "yyyy-MM-dd"),
@@ -52,9 +52,10 @@ class Transactions extends Component {
     const { startDate, endDate } = this.state.selectedDateRange;
     const page = currentPage - 1;
     const data = await getTransactions(startDate, endDate, page, pageSize);
-    const { transactions } = data;
+    const { transactions, totalPages } = data;
     this.setState({
       data: transactions,
+      totalPages,
     });
   };
 
