@@ -6,7 +6,7 @@ export async function getTransactions(
   startDate,
   endDate,
   page = 0,
-  pageSize = 5
+  pageSize = 10
 ) {
   const response = await axios.get(
     `${url}/api/v1/transactions/paged?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`
