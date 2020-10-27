@@ -48,12 +48,36 @@ class TransactionList extends Component {
     return totalExpense;
   };
 
+  renderTotal = (data, amountFormatter) => {
+    const totalIncome = this.computeTotalIncome(data);
+    const totalExpense = this.computeTotalExpense(data);
+
+    return (
+      <div className='transaction-total'>
+        <div className='total income'>
+          INCOME: {amountFormatter.format(totalIncome)}
+        </div>
+        <div className='total expense'>
+          EXPENSE: {amountFormatter.format(totalExpense)}
+        </div>
+        <div className='total balance'>
+          BALANCE: {amountFormatter.format(totalIncome - totalExpense)}
+        </div>
+      </div>
+    );
+  };
+
   render() {
     const { data, onClickTransaction } = this.props;
     // console.log(data);
     const dataByDate = groupBy(data, "date");
-    const totalIncome = this.computeTotalIncome(data);
-    const totalExpense = this.computeTotalExpense(data);
+    const amountFormatter = new Intl.NumberFormat("ms-MY", {
+      style: "currency",
+      currency: "MYR",
+      minimumFractionDigits: 2,
+    });
+
+    const header = this.renderTotal(data, amountFormatter);
 
     const result = Object.entries(dataByDate).map(([key, value], index) => {
       // console.log({ key, value });
@@ -61,26 +85,9 @@ class TransactionList extends Component {
       const date = key === now ? "Today" : format(new Date(key), "dd MMM yyyy");
       const totalAmount = this.computeTotal(value);
 
-      const amountFormatter = new Intl.NumberFormat("ms-MY", {
-        style: "currency",
-        currency: "MYR",
-        minimumFractionDigits: 2,
-      });
-
       return (
         <React.Fragment key={index}>
           <div className='transaction-list'>
-            <div className='transaction-total'>
-              <div className='total income'>
-                INCOME: {amountFormatter.format(totalIncome)}
-              </div>
-              <div className='total expense'>
-                EXPENSE: {amountFormatter.format(totalExpense)}
-              </div>
-              <div className='total balance'>
-                BALANCE: {amountFormatter.format(totalIncome - totalExpense)}
-              </div>
-            </div>
             <div className='transaction-list-card'>
               <div className='card-header'>
                 <div className='item-date'>{date}</div>
@@ -128,7 +135,10 @@ class TransactionList extends Component {
     return (
       <div>
         {data.length > 0 ? (
-          result
+          <>
+            {header}
+            {result}
+          </>
         ) : (
           <div className='empty-card'>No record found</div>
         )}
