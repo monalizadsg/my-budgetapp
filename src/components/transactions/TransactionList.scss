@@ -1,4 +1,29 @@
 .transaction-list {
+  .transaction-total {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .total {
+      padding: 5px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .income {
+      border: 2px solid #1dc29f;
+    }
+
+    .expense {
+      border: 2px solid #fe3b2c;
+    }
+
+    .balance {
+      border: 2px solid #4e82b4;
+    }
+  }
   .transaction-list-card {
     margin-top: 20px;
 
