@@ -22,15 +22,45 @@ class TransactionList extends Component {
     return computedTotal;
   };
 
+  computeTotalIncome = (data) => {
+    let totalIncome = 0;
+    // let expense = 0;
+
+    data.map((item) => {
+      if (item.category.type === "INCOME") {
+        totalIncome += item.amount;
+      }
+    });
+
+    return totalIncome;
+  };
+
+  computeTotalExpense = (data) => {
+    let totalExpense = 0;
+    // let expense = 0;
+
+    data.map((item) => {
+      if (item.category.type === "EXPENSE") {
+        totalExpense += item.amount;
+      }
+    });
+
+    return totalExpense;
+  };
+
   render() {
     const { data, onClickTransaction } = this.props;
+    // console.log(data);
     const dataByDate = groupBy(data, "date");
+    const totalIncome = this.computeTotalIncome(data);
+    const totalExpense = this.computeTotalExpense(data);
 
     const result = Object.entries(dataByDate).map(([key, value], index) => {
       // console.log({ key, value });
       const now = format(new Date(), "yyyy-MM-dd");
       const date = key === now ? "Today" : format(new Date(key), "dd MMM yyyy");
       const totalAmount = this.computeTotal(value);
+
       const amountFormatter = new Intl.NumberFormat("ms-MY", {
         style: "currency",
         currency: "MYR",
@@ -40,11 +70,22 @@ class TransactionList extends Component {
       return (
         <React.Fragment key={index}>
           <div className='transaction-list'>
+            <div className='transaction-total'>
+              <div className='total income'>
+                INCOME: {amountFormatter.format(totalIncome)}
+              </div>
+              <div className='total expense'>
+                EXPENSE: {amountFormatter.format(totalExpense)}
+              </div>
+              <div className='total balance'>
+                BALANCE: {amountFormatter.format(totalIncome - totalExpense)}
+              </div>
+            </div>
             <div className='transaction-list-card'>
               <div className='card-header'>
                 <div className='item-date'>{date}</div>
                 <div className='item-total'>
-                  {amountFormatter.format(totalAmount)}
+                  <div>{amountFormatter.format(totalAmount)}</div>
                 </div>
               </div>
 
