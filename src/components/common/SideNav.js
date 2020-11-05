@@ -25,12 +25,6 @@ const SideNav = () => {
               Budget
             </NavLink>
           </li>
-          <li className='side-navbar-item'>
-            <NavLink to='/transactions' activeClassName='active'>
-              <FontAwesomeIcon className='icon' icon={faCog} />
-              Settings
-            </NavLink>
-          </li>
         </ul>
       </nav>
     </div>
