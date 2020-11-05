@@ -18,7 +18,9 @@ import {
   getTransactions,
   getCategories,
 } from "../../services/transactionsService";
+import Loading from "../common/Loading";
 import "./Transactions.scss";
+import SuccessSnackbar from "../common/SuccessSnackbar";
 
 class Transactions extends Component {
   state = {
@@ -34,6 +36,11 @@ class Transactions extends Component {
       endDate: format(endOfWeek(new Date()), "yyyy-MM-dd"),
     },
     selectedTransaction: null,
+    isLoading: true,
+    successMessage: {
+      isOpen: false,
+      message: "",
+    },
   };
 
   async componentDidMount() {
@@ -44,6 +51,7 @@ class Transactions extends Component {
       data: data.transactions,
       totalPages: data.totalPages,
       categories,
+      isLoading: false,
     });
   }
 
@@ -57,6 +65,19 @@ class Transactions extends Component {
       data: transactions,
       totalPages,
     });
+  };
+
+  showSuccessMessage = (message) => {
+    let data = { ...this.state.successMessage };
+    data.isOpen = true;
+    data.message = message;
+    this.setState({ successMessage: data });
+  };
+
+  closeSuccessMessage = () => {
+    let successMessage = { ...this.state.successMessage };
+    successMessage.isOpen = false;
+    this.setState({ successMessage });
   };
 
   openModal = () => {
@@ -101,7 +122,15 @@ class Transactions extends Component {
       totalPages,
       currentPage,
       selectedDateRange,
+      isLoading,
     } = this.state;
+
+    const { isOpen, message } = this.state.successMessage;
+
+    if (isLoading) {
+      return <Loading isLoading={isLoading} />;
+    }
+
     return (
       <div className='transaction-container'>
         <div className='header'>
@@ -132,6 +161,11 @@ class Transactions extends Component {
             />
           )}
         </div>
+        <SuccessSnackbar
+          message={message}
+          open={isOpen}
+          onClose={this.closeSuccessMessage}
+        />
         <Dialog
           open={this.state.isOpen}
           onClose={this.closeModal}
@@ -162,6 +196,7 @@ class Transactions extends Component {
               closeModal={this.closeModal}
               updateData={this.updateData}
               selectedTransaction={selectedTransaction}
+              showSuccessMessage={this.showSuccessMessage}
             />
           </DialogContent>
         </Dialog>

@@ -74,10 +74,11 @@ class TransactionForm extends Component {
         location: "",
         payeeName: "Jaya Grocer",
       };
-
       await createTransaction(postData);
-      this.props.closeModal();
+
       this.props.updateData();
+      this.props.closeModal();
+      this.props.showSuccessMessage("Transaction Added!");
     } else {
       const transactionId = selectedTransaction.id;
       postData = {
@@ -94,6 +95,7 @@ class TransactionForm extends Component {
       await updateTransaction(postData, transactionId);
       this.props.closeModal();
       this.props.updateData();
+      this.props.showSuccessMessage("Transaction Updated!");
     }
   };
 
@@ -111,6 +113,7 @@ class TransactionForm extends Component {
     await deleteTransaction(transactionId);
     this.props.updateData();
     this.props.closeModal();
+    this.props.showSuccessMessage("Transaction Deleted!");
   };
 
   validateForm = () => {
@@ -173,7 +176,7 @@ class TransactionForm extends Component {
     return (
       <>
         <div className='transaction-form-wrapper'>
-          <form noValidate autoComplete='off'>
+          <form noValidate autoComplete>
             <TextField
               id='description'
               name='description'
