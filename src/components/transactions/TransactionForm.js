@@ -78,7 +78,7 @@ class TransactionForm extends Component {
 
       this.props.updateData();
       this.props.closeModal();
-      this.props.showSuccessMessage("Transaction Added!");
+      this.props.showToastMessage("Transaction is successfully added!");
     } else {
       const transactionId = selectedTransaction.id;
       postData = {
@@ -95,7 +95,7 @@ class TransactionForm extends Component {
       await updateTransaction(postData, transactionId);
       this.props.closeModal();
       this.props.updateData();
-      this.props.showSuccessMessage("Transaction Updated!");
+      this.props.showToastMessage("Transaction is successfully updated!");
     }
   };
 
@@ -113,7 +113,7 @@ class TransactionForm extends Component {
     await deleteTransaction(transactionId);
     this.props.updateData();
     this.props.closeModal();
-    this.props.showSuccessMessage("Transaction Deleted!");
+    this.props.showToastMessage("Transaction is successfully deleted!");
   };
 
   validateForm = () => {

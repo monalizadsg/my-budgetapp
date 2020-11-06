@@ -20,7 +20,7 @@ import {
 } from "../../services/transactionsService";
 import Loading from "../common/Loading";
 import "./Transactions.scss";
-import SuccessSnackbar from "../common/SuccessSnackbar";
+import Toast from "./../common/Toast";
 
 class Transactions extends Component {
   state = {
@@ -37,7 +37,7 @@ class Transactions extends Component {
     },
     selectedTransaction: null,
     isLoading: true,
-    successMessage: {
+    toastMessage: {
       isOpen: false,
       message: "",
     },
@@ -67,17 +67,17 @@ class Transactions extends Component {
     });
   };
 
-  showSuccessMessage = (message) => {
-    let data = { ...this.state.successMessage };
+  showToastMessage = (message) => {
+    let data = { ...this.state.toastMessage };
     data.isOpen = true;
     data.message = message;
-    this.setState({ successMessage: data });
+    this.setState({ toastMessage: data });
   };
 
-  closeSuccessMessage = () => {
-    let successMessage = { ...this.state.successMessage };
-    successMessage.isOpen = false;
-    this.setState({ successMessage });
+  closeToastMessage = () => {
+    let toastMessage = { ...this.state.toastMessage };
+    toastMessage.isOpen = false;
+    this.setState({ toastMessage });
   };
 
   openModal = () => {
@@ -125,7 +125,7 @@ class Transactions extends Component {
       isLoading,
     } = this.state;
 
-    const { isOpen, message } = this.state.successMessage;
+    const { isOpen, message } = this.state.toastMessage;
 
     if (isLoading) {
       return <Loading isLoading={isLoading} />;
@@ -161,10 +161,10 @@ class Transactions extends Component {
             />
           )}
         </div>
-        <SuccessSnackbar
+        <Toast
           message={message}
           open={isOpen}
-          onClose={this.closeSuccessMessage}
+          onClose={this.closeToastMessage}
         />
         <Dialog
           open={this.state.isOpen}
@@ -196,7 +196,7 @@ class Transactions extends Component {
               closeModal={this.closeModal}
               updateData={this.updateData}
               selectedTransaction={selectedTransaction}
-              showSuccessMessage={this.showSuccessMessage}
+              showToastMessage={this.showToastMessage}
             />
           </DialogContent>
         </Dialog>
