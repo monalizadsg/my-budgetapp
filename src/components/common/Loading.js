@@ -13,7 +13,7 @@ const Loading = (props) => {
         alignContent: "center",
       }}
     >
-      {props.isLoading && <CircularProgress color='primary' />}
+      {props.isLoading && <CircularProgress color='secondary' />}
     </div>
   );
 };
