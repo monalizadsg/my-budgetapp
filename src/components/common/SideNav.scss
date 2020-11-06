@@ -4,10 +4,12 @@
 
   .side-navbar-list {
     list-style-type: none;
+    width: 100%;
+    display: block;
   }
 
   .side-navbar-item {
-    width: 100%;
+    width: 60%;
     padding: 12px 0;
 
     a {
@@ -25,6 +27,7 @@
   }
 
   .active {
+    width: 100%;
     background-color: #f1f1f1;
     color: #000;
   }

@@ -1,10 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import {
-  faClipboard,
-  faBullseye,
-  faCog,
-} from "@fortawesome/free-solid-svg-icons";
+import { faClipboard, faBullseye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./SideNav.scss";
 
