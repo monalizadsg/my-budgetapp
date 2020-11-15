@@ -8,7 +8,7 @@ function Alert(props) {
 
 const Toast = ({ message, open, onClose }) => {
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={onClose}>
+    <Snackbar open={open} autoHideDuration={4000} onClose={onClose}>
       <Alert onClose={onClose} severity='success'>
         {message}
       </Alert>

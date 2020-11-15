@@ -1,30 +1,17 @@
 import React, { Component } from "react";
-import "./TransactionForm.scss";
-import { format } from "date-fns";
 import {
   createTransaction,
   updateTransaction,
   deleteTransaction,
 } from "../../services/transactionsService";
-import {
-  TextField,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
-  Button,
-  FormHelperText,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  DialogContentText,
-} from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+import DatePickerInput from "../common/DatePickerInput";
+import ConfirmDialog from "./../common/ConfirmDialog";
+import SelectInput from "./../common/SelectInput";
+import FormActions from "./../common/FormActions";
+import TextInput from "../common/TextInput";
+import { MenuItem } from "@material-ui/core";
+import { format } from "date-fns";
+import "./TransactionForm.scss";
 
 class TransactionForm extends Component {
   state = {
@@ -35,6 +22,7 @@ class TransactionForm extends Component {
     errors: {},
     isEditing: false,
     openConfirmDialog: false,
+    isLoading: false,
   };
 
   componentDidMount() {
@@ -57,45 +45,37 @@ class TransactionForm extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { selectedTransaction } = this.props;
-    let postData = {};
 
     const validation = this.validateForm();
     if (!validation) {
       return;
     }
 
-    if (selectedTransaction === null) {
-      postData = {
-        userId: 1,
-        description: this.state.description,
-        amount: parseFloat(this.state.amount),
-        categoryId: parseInt(this.state.category),
-        date: this.state.date,
-        location: "",
-        payeeName: "Jaya Grocer",
-      };
-      await createTransaction(postData);
+    this.setState({ isLoading: true });
 
-      this.props.updateData();
-      this.props.closeModal();
-      this.props.showToastMessage("Transaction is successfully added!");
+    const postData = {
+      userId: 1,
+      description: this.state.description,
+      amount: parseFloat(this.state.amount),
+      categoryId: parseInt(this.state.category),
+      date: this.state.date,
+      location: "",
+      payeeName: "Jaya Grocer",
+    };
+
+    let upsertPromise = null;
+    if (selectedTransaction?.id) {
+      upsertPromise = updateTransaction(postData, selectedTransaction?.id);
     } else {
-      const transactionId = selectedTransaction.id;
-      postData = {
-        id: transactionId,
-        userId: 1,
-        description: this.state.description,
-        amount: parseFloat(this.state.amount),
-        categoryId: parseInt(this.state.category),
-        date: this.state.date,
-        location: "",
-        payeeName: "Jaya Grocer",
-      };
+      upsertPromise = createTransaction(postData);
+    }
 
-      await updateTransaction(postData, transactionId);
-      this.props.closeModal();
-      this.props.updateData();
-      this.props.showToastMessage("Transaction is successfully updated!");
+    try {
+      const result = await upsertPromise;
+      this.props.onSaveSuccess(result);
+    } catch (error) {
+      // TODO: display error to the user (pop-up)
+      console.log(error);
     }
   };
 
@@ -109,11 +89,13 @@ class TransactionForm extends Component {
   };
 
   handleDelete = async () => {
+    this.setState({ isLoading: true });
+
     const transactionId = this.props.selectedTransaction.id;
     await deleteTransaction(transactionId);
     this.props.updateData();
     this.props.closeModal();
-    this.props.showToastMessage("Transaction is successfully deleted!");
+    this.props.showToast("Transaction is successfully deleted!");
   };
 
   validateForm = () => {
@@ -166,6 +148,7 @@ class TransactionForm extends Component {
       errors,
       isEditing,
       openConfirmDialog,
+      isLoading,
     } = this.state;
 
     const transaction = {
@@ -177,132 +160,69 @@ class TransactionForm extends Component {
       <>
         <div className='transaction-form-wrapper'>
           <form noValidate autoComplete>
-            <TextField
-              id='description'
+            <TextInput
               name='description'
-              size='medium'
               label='Description'
-              variant='outlined'
               value={description}
               onChange={this.handleInputChange}
               error={errors.description}
-              helperText={errors.description}
             />
-            <TextField
+            <TextInput
               type='number'
-              id='amount'
               name='amount'
-              size='medium'
               label='Amount'
-              variant='outlined'
               value={amount}
               onChange={this.handleInputChange}
               error={errors.amount}
-              helperText={errors.amount}
             />
-            <FormControl
-              variant='outlined'
-              style={{ minWidth: "200px" }}
-              size='medium'
+            <SelectInput
+              name='category'
+              label='Category'
+              value={category}
               error={errors.category}
+              onChange={this.handleInputChange}
+              // menuData={categories}
             >
-              <InputLabel htmlFor='category'>Category</InputLabel>
-              <Select
-                label='Category'
-                name='category'
-                id='category'
-                value={category}
-                onChange={this.handleInputChange}
-              >
-                <MenuItem value='' disabled />
-                {categories &&
-                  categories.map((category) => {
-                    return (
-                      <MenuItem key={category.id} value={category.id}>
-                        {category.name}
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-              {errors.category && (
-                <FormHelperText>{errors.category}</FormHelperText>
-              )}
-            </FormControl>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                autoOk
-                variant='inline'
-                size='medium'
-                inputVariant='outlined'
-                label='Date'
-                format='yyyy/MM/dd'
-                value={date}
-                InputAdornmentProps={{ position: "start" }}
-                onChange={(date) => this.handleDateChange(date)}
-                error={errors.date}
-                helperText={errors.date}
-              />
-            </MuiPickersUtilsProvider>
-            <div className='form-actions'>
-              {!isEditing ? (
-                <>
-                  <Button onClick={closeModal} color='primary'>
-                    Cancel
-                  </Button>
-                  <Button onClick={this.handleSubmit} color='primary'>
-                    Add
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button onClick={this.showConfirmDialog} color='primary'>
-                    Delete
-                  </Button>
-                  <Button onClick={this.handleSubmit} color='primary'>
-                    Save
-                  </Button>
-                </>
-              )}
-            </div>
+              {categories &&
+                categories.map((menu, index) => {
+                  return (
+                    <MenuItem key={index} value={menu.id}>
+                      {menu.name}
+                    </MenuItem>
+                  );
+                })}
+            </SelectInput>
+            <DatePickerInput
+              label='Date'
+              value={date}
+              onDateChange={this.handleDateChange}
+              error={errors.date}
+            />
+            <FormActions
+              isEditing={isEditing}
+              onClose={closeModal}
+              isLoading={isLoading}
+              onSubmit={this.handleSubmit}
+              onShowDialog={this.showConfirmDialog}
+            />
           </form>
         </div>
+
         <ConfirmDialog
           isOpen={openConfirmDialog}
           onClose={this.closeConfirmDialog}
-          selectedTransaction={transaction}
           onDelete={this.handleDelete}
-        />
+          isLoading={isLoading}
+        >
+          <div>
+            <p>Description: {transaction.description}</p>
+            <p>Amount: {transaction.amount}</p>
+            <p>Date: {transaction.date}</p>
+          </div>
+        </ConfirmDialog>
       </>
     );
   }
 }
-
-const ConfirmDialog = ({ isOpen, onClose, selectedTransaction, onDelete }) => {
-  const selected = selectedTransaction;
-  return (
-    <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle id='alert-dialog-title'>
-        Are you sure you want to delete this transaction?
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          <div>
-            <p>Description: {selected.description}</p>
-            <p>Amount: {selected.amount}</p>
-            <p>Date: {selected.date}</p>
-          </div>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color='primary'>
-          No
-        </Button>
-        <Button onClick={onDelete} color='primary' autoFocus>
-          Yes
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
 
 export default TransactionForm;

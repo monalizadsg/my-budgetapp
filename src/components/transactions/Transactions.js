@@ -67,14 +67,37 @@ class Transactions extends Component {
     });
   };
 
-  showToastMessage = (message) => {
+  handleUpdateSuccess = (result) => {
+    const newData = this.state.data.map((item) => {
+      if (item.id === result.id) {
+        return result;
+      }
+      return item;
+    });
+    this.setState({
+      data: newData,
+    });
+    this.closeModal();
+    this.showToast("Transaction is successfully updated!");
+  };
+
+  handleCreateSuccess = (result) => {
+    const newData = [...this.state.data, result];
+    this.setState({
+      data: newData,
+    });
+    this.closeModal();
+    this.showToast("Transaction is successfully added!");
+  };
+
+  showToast = (message) => {
     let data = { ...this.state.toastMessage };
     data.isOpen = true;
     data.message = message;
     this.setState({ toastMessage: data });
   };
 
-  closeToastMessage = () => {
+  closeToast = () => {
     let toastMessage = { ...this.state.toastMessage };
     toastMessage.isOpen = false;
     this.setState({ toastMessage });
@@ -196,7 +219,12 @@ class Transactions extends Component {
               closeModal={this.closeModal}
               updateData={this.updateData}
               selectedTransaction={selectedTransaction}
-              showToastMessage={this.showToastMessage}
+              onSaveSuccess={
+                selectedTransaction
+                  ? this.handleUpdateSuccess
+                  : this.handleCreateSuccess
+              }
+              showToastMessage={this.showToast}
             />
           </DialogContent>
         </Dialog>

@@ -5,7 +5,7 @@ const Loading = (props) => {
   return (
     <div
       style={{
-        zIndex: "1",
+        zIndex: "99",
         width: "100%",
         height: "100%",
         display: "flex",
@@ -13,7 +13,9 @@ const Loading = (props) => {
         alignContent: "center",
       }}
     >
-      {props.isLoading && <CircularProgress color='secondary' />}
+      {props.isLoading && (
+        <CircularProgress color='primary' size={props.size} />
+      )}
     </div>
   );
 };
