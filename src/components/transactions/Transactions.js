@@ -68,24 +68,28 @@ class Transactions extends Component {
   };
 
   handleUpdateSuccess = (result) => {
-    const newData = this.state.data.map((item) => {
-      if (item.id === result.id) {
-        return result;
-      }
-      return item;
-    });
-    this.setState({
-      data: newData,
-    });
+    // Todo: Backend; Return value must be aligned with paginated trnx
+    // const newData = this.state.data.map((item) => {
+    //   if (item.id === result.id) {
+    //     return result;
+    //   }
+    //   return item;
+    // });
+    // this.setState({
+    //   data: newData,
+    // });
+    this.updateData();
     this.closeModal();
     this.showToast("Transaction is successfully updated!");
   };
 
   handleCreateSuccess = (result) => {
-    const newData = [...this.state.data, result];
-    this.setState({
-      data: newData,
-    });
+    // Todo: Backend; Return value must be aligned with paginated trnx
+    // const newData = [...this.state.data, result];
+    // this.setState({
+    //   data: newData,
+    // });
+    this.updateData();
     this.closeModal();
     this.showToast("Transaction is successfully added!");
   };
@@ -184,11 +188,7 @@ class Transactions extends Component {
             />
           )}
         </div>
-        <Toast
-          message={message}
-          open={isOpen}
-          onClose={this.closeToastMessage}
-        />
+        <Toast message={message} open={isOpen} onClose={this.closeToast} />
         <Dialog
           open={this.state.isOpen}
           onClose={this.closeModal}
@@ -224,7 +224,7 @@ class Transactions extends Component {
                   ? this.handleUpdateSuccess
                   : this.handleCreateSuccess
               }
-              showToastMessage={this.showToast}
+              showToast={this.showToast}
             />
           </DialogContent>
         </Dialog>

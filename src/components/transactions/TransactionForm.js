@@ -72,7 +72,7 @@ class TransactionForm extends Component {
 
     try {
       const result = await upsertPromise;
-      this.props.onSaveSuccess(result);
+      this.props.onSaveSuccess(result.data);
     } catch (error) {
       // TODO: display error to the user (pop-up)
       console.log(error);
@@ -159,7 +159,7 @@ class TransactionForm extends Component {
     return (
       <>
         <div className='transaction-form-wrapper'>
-          <form noValidate autoComplete>
+          <form noValidate>
             <TextInput
               name='description'
               label='Description'

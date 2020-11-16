@@ -18,6 +18,7 @@ class TransactionList extends Component {
         expense += item.amount;
         computedTotal = income - expense;
       }
+      return computedTotal;
     });
     return computedTotal;
   };
@@ -30,6 +31,7 @@ class TransactionList extends Component {
       if (item.category.type === "INCOME") {
         totalIncome += item.amount;
       }
+      return totalIncome;
     });
 
     return totalIncome;
@@ -43,6 +45,7 @@ class TransactionList extends Component {
       if (item.category.type === "EXPENSE") {
         totalExpense += item.amount;
       }
+      return totalExpense;
     });
 
     return totalExpense;
@@ -69,7 +72,10 @@ class TransactionList extends Component {
 
   render() {
     const { data, onClickTransaction } = this.props;
-    // console.log(data);
+    if (!data) {
+      return;
+    }
+
     const dataByDate = groupBy(data, "date");
     const amountFormatter = new Intl.NumberFormat("ms-MY", {
       style: "currency",
