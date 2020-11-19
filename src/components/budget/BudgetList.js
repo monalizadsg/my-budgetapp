@@ -5,21 +5,8 @@ import {
   ListItem,
   LinearProgress,
   withStyles,
-  Tooltip,
-  Button,
 } from "@material-ui/core";
-import {
-  format,
-  startOfWeek,
-  endOfWeek,
-  startOfMonth,
-  endOfMonth,
-} from "date-fns";
-import groupBy from "lodash/groupBy";
 import "./BudgetList.scss";
-import { startOfYear } from "date-fns";
-import { endOfYear } from "date-fns/esm";
-import { getBudgetBalances } from "../../services/budgetService";
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -61,13 +48,17 @@ class BudgetList extends Component {
   };
 
   render() {
-    const { data, onClickTransaction } = this.props;
+    const { data, onClickBudget } = this.props;
     const result = data.map((item) => {
       return (
-        <div className='budget-list'>
+        <div key={item.id} className='budget-list'>
           <div className='budget-list-card'>
             <Card className='card-item'>
-              <List className='list'>
+              <List
+                className='list'
+                key={item.id}
+                onClick={() => onClickBudget(item)}
+              >
                 <ListItem className='list-item'>
                   <div className='details'>
                     <div className='item-title'>{item.category.name}</div>
