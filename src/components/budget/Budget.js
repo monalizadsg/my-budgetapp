@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import BudgetForm from "./BudgetForm";
 import { getCategories } from "../../services/transactionsService";
-import { getBudgets, getBudgetBalances } from "../../services/budgetService";
-import { Dialog, DialogContent, DialogTitle } from "@material-ui/core";
+import { getBudgetBalances } from "../../services/budgetService";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import "./Budget.scss";
 import BudgetList from "./BudgetList";
 import PeriodTypeDropdown from "../common/PeriodTypeDropdown";
 import { format } from "date-fns";
+import Loading from "./../common/Loading";
+import Toast from "./../common/Toast";
 
 class Budget extends Component {
   state = {
@@ -18,6 +27,12 @@ class Budget extends Component {
       type: "Weekly",
       startDate: format(new Date(), "yyyy-MM-dd"),
     },
+    selectedBudget: null,
+    isLoading: true,
+    toastMessage: {
+      isOpen: false,
+      message: "",
+    },
   };
 
   async componentDidMount() {
@@ -27,15 +42,44 @@ class Budget extends Component {
     this.setState({
       budgetBalances: budgetBalances.data,
       categories,
+      isLoading: false,
     });
   }
+
+  updateData = async () => {
+    const { type, startDate } = this.state.selectedPeriodType;
+    const budgetBalances = await getBudgetBalances(type, startDate);
+    this.setState({
+      budgetBalances: budgetBalances.data,
+    });
+  };
 
   openModal = () => {
     this.setState({ isOpen: true });
   };
 
   closeModal = () => {
-    this.setState({ isOpen: false });
+    this.setState({ isOpen: false, selectedBudget: null });
+  };
+
+  showToast = (message) => {
+    let toastMessage = { ...this.state.toastMessage };
+    toastMessage.isOpen = true;
+    toastMessage.message = message;
+    this.setState({ toastMessage });
+  };
+
+  closeToast = () => {
+    let toastMessage = { ...this.state.toastMessage };
+    toastMessage.isOpen = false;
+    toastMessage.message = "";
+    this.setState({ toastMessage });
+  };
+
+  onClickBudget = (item) => {
+    this.setState({ selectedBudget: item }, () => {
+      this.setState({ isOpen: true });
+    });
   };
 
   filterBudget = async (period) => {
@@ -49,14 +93,26 @@ class Budget extends Component {
   };
 
   render() {
+    const { selectedBudget, isLoading } = this.state;
+    const { isOpen, message } = this.state.toastMessage;
+
+    if (isLoading) {
+      return <Loading isLoading={isLoading} />;
+    }
+
     return (
       <div className='budget-container'>
         <div className='header'>
           <h2>Budget</h2>
           <PeriodTypeDropdown onFilter={this.filterBudget} />
-          <button onClick={this.openModal}>+ Add</button>
+          <button className='button' onClick={this.openModal}>
+            + Add
+          </button>
         </div>
-        <BudgetList data={this.state.budgetBalances} />
+        <BudgetList
+          data={this.state.budgetBalances}
+          onClickBudget={this.onClickBudget}
+        />
         <Dialog
           open={this.state.isOpen}
           onClose={this.closeModal}
@@ -64,14 +120,40 @@ class Budget extends Component {
           maxWidth='xs'
           disableBackdropClick
         >
-          <DialogTitle>Add Budget</DialogTitle>
+          <DialogTitle>
+            {!selectedBudget ? (
+              <Typography variant='h6'>Add Budget</Typography>
+            ) : (
+              <>
+                <Typography variant='h6'>Edit/Delete Budget</Typography>
+                <IconButton
+                  edge='end'
+                  color='inherit'
+                  onClick={this.closeModal}
+                  aria-label='close'
+                >
+                  <CloseIcon />
+                </IconButton>
+              </>
+            )}
+          </DialogTitle>
           <DialogContent>
             <BudgetForm
               categories={this.state.categories}
               closeModal={this.closeModal}
+              updateData={this.updateData}
+              selectedBudget={selectedBudget}
+              // onSaveSuccess={
+              //   selectedTransaction
+              //     ? this.handleUpdateSuccess
+              //     : this.handleCreateSuccess
+              // }
+              showToast={this.showToast}
             />
           </DialogContent>
         </Dialog>
+
+        <Toast message={message} open={isOpen} onClose={this.closeToast} />
       </div>
     );
   }
