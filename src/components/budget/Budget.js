@@ -104,10 +104,12 @@ class Budget extends Component {
       <div className='budget-container'>
         <div className='header'>
           <h2>Budget</h2>
-          <PeriodTypeDropdown onFilter={this.filterBudget} />
-          <button className='button' onClick={this.openModal}>
-            + Add
-          </button>
+          <div>
+            <PeriodTypeDropdown onFilter={this.filterBudget} />
+            <button className='add-button' onClick={this.openModal}>
+              + Add
+            </button>
+          </div>
         </div>
         <BudgetList
           data={this.state.budgetBalances}

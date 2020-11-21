@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Card,
   List,
@@ -22,17 +22,11 @@ const BorderLinearProgress = withStyles((theme) => ({
   },
 }))(LinearProgress);
 
-class BudgetList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  renderHeader = () => {
-    const period = this.props.data[0]?.periodType;
-    const startDate = this.props.data[0]?.startDate;
-    const endDate = this.props.data[0]?.endDate;
-
+const BudgetList = (props) => {
+  const renderHeader = () => {
+    const period = props.data[0]?.periodType;
+    const startDate = props.data[0]?.startDate;
+    const endDate = props.data[0]?.endDate;
     return (
       <div className='budget-list'>
         <div className='budget-list-card'>
@@ -47,58 +41,76 @@ class BudgetList extends Component {
     );
   };
 
-  render() {
-    const { data, onClickBudget } = this.props;
-    const result = data.map((item) => {
-      return (
-        <div key={item.id} className='budget-list'>
-          <div className='budget-list-card'>
-            <Card className='card-item'>
-              <List
-                className='list'
-                key={item.id}
-                onClick={() => onClickBudget(item)}
-              >
-                <ListItem className='list-item'>
-                  <div className='details'>
-                    <div className='item-title'>{item.category.name}</div>
-                    <div className='item-amount'>
-                      <h4 className='budget-total'>{item.amountLimit}</h4>
-                    </div>
-                  </div>
-                  <div className='sub-details'>
-                    <div className='left'>Icons</div>
-                    <div className='right'>
-                      <div className='progress-bar'>
-                        <BorderLinearProgress
-                          variant='determinate'
-                          value={80}
-                        />
-                      </div>
-                      <div className='amount-left'>left ~ 50</div>
-                    </div>
-                  </div>
-                </ListItem>
-              </List>
-            </Card>
-          </div>
-        </div>
-      );
-    });
+  const getTotalExpense = (maxValue, leftValue) => {
+    const MIN = 0;
+    const MAX = maxValue;
+    const normalize = (value) => ((value - MIN) * 100) / (MAX - MIN);
+    const totalExpense =
+      leftValue > 0 ? normalize(maxValue - leftValue) : normalize(maxValue);
 
+    return totalExpense;
+  };
+
+  const { data, onClickBudget } = props;
+  const result = data.map((item) => {
+    const totalExpense = getTotalExpense(item.amountLimit, item.amountLeft);
+    const isLimitReach = item.amountLeft <= 0;
     return (
-      <div>
-        {data.length > 0 ? (
-          <>
-            {this.renderHeader()}
-            {result}
-          </>
-        ) : (
-          <div className='empty-card'>No record found</div>
-        )}
+      <div key={item.id} className='budget-list'>
+        <div className='budget-list-card'>
+          <Card className='card-item'>
+            <List
+              className='list'
+              key={item.id}
+              onClick={() => onClickBudget(item)}
+            >
+              <ListItem className='list-item'>
+                <div className='details'>
+                  <div className='item-title'>{item.category.name}</div>
+                  <div className='item-amount'>
+                    <h4 className='budget-total'>{item.amountLimit}</h4>
+                  </div>
+                </div>
+                <div className='sub-details'>
+                  <div className='left'></div>
+                  <div className='right'>
+                    <div className='progress-bar'>
+                      <BorderLinearProgress
+                        variant='determinate'
+                        value={totalExpense}
+                        className={isLimitReach ? "reach-progress-limit" : ""}
+                      />
+                    </div>
+                    <div
+                      className={`amount-left ${
+                        isLimitReach ? "overspent" : ""
+                      }`}
+                    >
+                      {item.amountLeft < 0 ? "Overspent: " : "Left: "}
+                      {item.amountLeft}
+                    </div>
+                  </div>
+                </div>
+              </ListItem>
+            </List>
+          </Card>
+        </div>
       </div>
     );
-  }
-}
+  });
+
+  return (
+    <div>
+      {data.length > 0 ? (
+        <>
+          {renderHeader()}
+          {result}
+        </>
+      ) : (
+        <div className='empty-card'>No record found</div>
+      )}
+    </div>
+  );
+};
 
 export default BudgetList;

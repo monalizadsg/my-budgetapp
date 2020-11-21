@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { format, startOfMonth, startOfWeek, startOfYear } from "date-fns";
 import { FormControl, Select, InputLabel, MenuItem } from "@material-ui/core";
 import "./DateRangeDropdown.scss";
 
@@ -39,14 +40,17 @@ class PeriodTypeDropdown extends Component {
         {
           id: 1,
           type: "Weekly",
+          startDate: format(startOfWeek(new Date()), "yyyy-MM-dd"),
         },
         {
           id: 2,
           type: "Monthly",
+          startDate: format(startOfMonth(new Date()), "yyyy-MM-dd"),
         },
         {
           id: 3,
           type: "Yearly",
+          startDate: format(startOfYear(new Date()), "yyyy-MM-dd"),
         },
       ],
     };

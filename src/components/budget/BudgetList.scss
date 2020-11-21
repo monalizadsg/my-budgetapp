@@ -90,6 +90,12 @@
             width: 100%;
             margin-top: 10px;
 
+            .reach-progress-limit {
+              .MuiLinearProgress-bar {
+                background-color: #f44336;
+              }
+            }
+
             .tooltip {
               border: 1px solid red;
             }
@@ -97,7 +103,12 @@
           .amount-left {
             display: flex;
             align-self: flex-end;
-            font-size: 14px;
+            font-size: 12px;
+            margin-top: 5px;
+
+            &.overspent {
+              color: #f44336;
+            }
           }
         }
       }

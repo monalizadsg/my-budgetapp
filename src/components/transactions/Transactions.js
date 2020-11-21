@@ -168,7 +168,9 @@ class Transactions extends Component {
               startDate={selectedDateRange.startDate}
               endDate={selectedDateRange.endDate}
             />
-            <button onClick={this.openModal}>+ Add</button>
+            <button onClick={this.openModal} className='add-button'>
+              + Add
+            </button>
           </div>
         </div>
         <div>
