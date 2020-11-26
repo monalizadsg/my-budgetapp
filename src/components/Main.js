@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import AppRouter from "../routes/AppRouter";
-import SideNav from "./common/SideNav";
+import React from "react";
+import AppRouter from "../app/AppRouter";
+import SideNav from "./SideNav";
 import "./Main.scss";
 import { ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+// import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../styles/theme";
 
 const Main = () => {

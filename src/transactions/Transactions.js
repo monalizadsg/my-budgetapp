@@ -13,14 +13,11 @@ import { format, startOfWeek, endOfWeek } from "date-fns";
 
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
-import DateRangeDropdown from "./../common/DateRangeDropdown";
-import {
-  getTransactions,
-  getCategories,
-} from "../../services/transactionsService";
-import Loading from "../common/Loading";
+import DateRangeDropdown from "../components/DateRangeDropdown";
+import { getTransactions, getCategories } from "./transactionsService";
+import Loading from "../components/Loading";
 import "./Transactions.scss";
-import Toast from "./../common/Toast";
+import Toast from "../components/Toast";
 
 class Transactions extends Component {
   state = {

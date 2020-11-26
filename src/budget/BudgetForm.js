@@ -8,16 +8,12 @@ import {
   // DialogTitle,
 } from "@material-ui/core";
 // import { format } from "date-fns";
-import {
-  createBudget,
-  updateBudget,
-  deleteBudget,
-} from "../../services/budgetService";
+import { createBudget, updateBudget, deleteBudget } from "./budgetService";
 // import DatePickerInput from "./../common/DatePickerInput";
-import ConfirmDialog from "../common/ConfirmDialog";
-import FormActions from "./../common/FormActions";
-import SelectInput from "../common/SelectInput";
-import TextInput from "../common/TextInput";
+import ConfirmDialog from "../components/ConfirmDialog";
+import FormActions from "../components/FormActions";
+import SelectInput from "../components/SelectInput";
+import TextInput from "../components/TextInput";
 import "./BudgetForm.scss";
 
 const periodRange = {

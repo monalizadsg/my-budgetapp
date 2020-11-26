@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import BudgetForm from "./BudgetForm";
-import { getCategories } from "../../services/transactionsService";
-import { getBudgetBalances } from "../../services/budgetService";
+import { getCategories } from "../transactions/transactionsService";
+import { getBudgetBalances } from "./budgetService";
 import {
   Dialog,
   DialogContent,
@@ -12,10 +12,10 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import "./Budget.scss";
 import BudgetList from "./BudgetList";
-import PeriodTypeDropdown from "../common/PeriodTypeDropdown";
+import PeriodTypeDropdown from "../components/PeriodTypeDropdown";
 import { format } from "date-fns";
-import Loading from "./../common/Loading";
-import Toast from "./../common/Toast";
+import Loading from "../components/Loading";
+import Toast from "../components/Toast";
 
 class Budget extends Component {
   state = {
