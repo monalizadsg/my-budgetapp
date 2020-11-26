@@ -3,12 +3,12 @@ import {
   createTransaction,
   updateTransaction,
   deleteTransaction,
-} from "../../services/transactionsService";
-import DatePickerInput from "../common/DatePickerInput";
-import ConfirmDialog from "./../common/ConfirmDialog";
-import SelectInput from "./../common/SelectInput";
-import FormActions from "./../common/FormActions";
-import TextInput from "../common/TextInput";
+} from "./transactionsService";
+import DatePickerInput from "../components/DatePickerInput";
+import ConfirmDialog from "../components/ConfirmDialog";
+import SelectInput from "../components/SelectInput";
+import FormActions from "../components/FormActions";
+import TextInput from "../components/TextInput";
 import { MenuItem } from "@material-ui/core";
 import { format } from "date-fns";
 import "./TransactionForm.scss";
