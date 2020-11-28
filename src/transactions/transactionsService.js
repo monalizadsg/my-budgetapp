@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const url = process.env.REACT_APP_API_URL;
+import api from "../commons/api";
 
 export async function getTransactions(
   startDate,
@@ -8,27 +6,27 @@ export async function getTransactions(
   page = 0,
   pageSize = 10
 ) {
-  const response = await axios.get(
-    `${url}/api/v1/transactions/paged?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`
+  const response = await api.get(
+    `/v1/transactions/paged?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`
   );
   return response.data;
 }
 
 export async function getCategories() {
-  const response = await axios.get(`${url}/api/v1/categories`);
+  const response = await api.get(`/v1/categories`);
   return response.data;
 }
 
 export async function createTransaction(data) {
-  return await axios.post(`${url}/api/v1/transactions`, data);
+  return await api.post(`/v1/transactions`, data);
 }
 
 export async function updateTransaction(data, id) {
-  return await axios.put(`${url}/api/v1/transactions/${id}`, data);
+  return await api.put(`/v1/transactions/${id}`, data);
 }
 
 export async function deleteTransaction(id) {
-  return await axios.delete(`${url}/api/v1/transactions/${id}`);
+  return await api.delete(`/v1/transactions/${id}`);
 }
 
 export default {
