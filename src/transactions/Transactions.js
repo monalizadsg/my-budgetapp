@@ -38,17 +38,22 @@ class Transactions extends Component {
       isOpen: false,
       message: "",
     },
+    totalIncome: 0,
+    totalExpense: 0,
   };
 
   async componentDidMount() {
     const { startDate, endDate } = this.state.selectedDateRange;
     const data = await getTransactions(startDate, endDate);
+    console.log(data);
     const categories = await getCategories();
     this.setState({
       data: data.transactions,
       totalPages: data.totalPages,
       categories,
       isLoading: false,
+      totalIncome: data.totalIncome,
+      totalExpense: data.totalExpense,
     });
   }
 
@@ -61,6 +66,8 @@ class Transactions extends Component {
     this.setState({
       data: transactions,
       totalPages,
+      totalIncome: data.totalIncome,
+      totalExpense: data.totalExpense,
     });
   };
 
@@ -135,6 +142,8 @@ class Transactions extends Component {
       data: data.transactions,
       totalPages: data.totalPages,
       selectedDateRange: range,
+      totalIncome: data.totalIncome,
+      totalExpense: data.totalExpense,
     });
   };
 
@@ -147,6 +156,8 @@ class Transactions extends Component {
       currentPage,
       selectedDateRange,
       isLoading,
+      totalIncome,
+      totalExpense,
     } = this.state;
 
     const { isOpen, message } = this.state.toastMessage;
@@ -174,6 +185,8 @@ class Transactions extends Component {
           <TransactionList
             data={data}
             onClickTransaction={this.onClickTransaction}
+            totalIncome={totalIncome}
+            totalExpense={totalExpense}
           />
         </div>
         <div className='paginatiton'>

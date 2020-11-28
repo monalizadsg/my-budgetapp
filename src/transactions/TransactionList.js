@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import groupBy from "lodash/groupBy";
 import { Card, List, ListItem, Divider } from "@material-ui/core";
 import "./TransactionList.scss";
+import Empty from "../components/Empty";
 
 class TransactionList extends Component {
   computeTotal = (dataByDate) => {
@@ -23,38 +24,7 @@ class TransactionList extends Component {
     return computedTotal;
   };
 
-  computeTotalIncome = (data) => {
-    let totalIncome = 0;
-    // let expense = 0;
-
-    data.map((item) => {
-      if (item.category.type === "INCOME") {
-        totalIncome += item.amount;
-      }
-      return totalIncome;
-    });
-
-    return totalIncome;
-  };
-
-  computeTotalExpense = (data) => {
-    let totalExpense = 0;
-    // let expense = 0;
-
-    data.map((item) => {
-      if (item.category.type === "EXPENSE") {
-        totalExpense += item.amount;
-      }
-      return totalExpense;
-    });
-
-    return totalExpense;
-  };
-
-  renderTotal = (data, amountFormatter) => {
-    const totalIncome = this.computeTotalIncome(data);
-    const totalExpense = this.computeTotalExpense(data);
-
+  renderTotal = (totalIncome, totalExpense, amountFormatter) => {
     return (
       <div className='transaction-total'>
         <div className='total income'>
@@ -71,7 +41,7 @@ class TransactionList extends Component {
   };
 
   render() {
-    const { data, onClickTransaction } = this.props;
+    const { data, onClickTransaction, totalIncome, totalExpense } = this.props;
     if (!data) {
       return;
     }
@@ -83,7 +53,7 @@ class TransactionList extends Component {
       minimumFractionDigits: 2,
     });
 
-    const header = this.renderTotal(data, amountFormatter);
+    const header = this.renderTotal(totalIncome, totalExpense, amountFormatter);
 
     const result = Object.entries(dataByDate).map(([key, value], index) => {
       // console.log({ key, value });
@@ -146,7 +116,7 @@ class TransactionList extends Component {
             {result}
           </>
         ) : (
-          <div className='empty-card'>No record found</div>
+          <Empty />
         )}
       </div>
     );
