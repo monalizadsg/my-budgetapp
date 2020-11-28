@@ -2,27 +2,38 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { faClipboard, faBullseye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { List, ListItem } from "@material-ui/core";
 import "./SideNav.scss";
+
+const navLinks = [
+  {
+    title: "Transaction",
+    path: "/transactions",
+    icon: <FontAwesomeIcon className='icon' icon={faClipboard} />,
+  },
+  {
+    title: "Budget",
+    path: "/budgets",
+    icon: <FontAwesomeIcon className='icon' icon={faBullseye} />,
+  },
+];
 
 const SideNav = () => {
   return (
     <div className='side-nav-container'>
-      <nav className='side-navbar'>
-        <ul className='side-navbar-list'>
-          <li className='side-navbar-item'>
-            <NavLink exact to='/' activeClassName='active'>
-              <FontAwesomeIcon className='icon' icon={faClipboard} />
-              Transactions
-            </NavLink>
-          </li>
-          <li className='side-navbar-item'>
-            <NavLink to='/budget' activeClassName='active'>
-              <FontAwesomeIcon className='icon' icon={faBullseye} />
-              Budget
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
+      <List
+        component='nav'
+        aria-labelledby='main navigation'
+        className='side-navbar'
+      >
+        {navLinks.map(({ title, path, icon }) => (
+          <NavLink to={path} activeClassName='active'>
+            <ListItem className='side-navbar-item'>
+              {icon} {title}
+            </ListItem>
+          </NavLink>
+        ))}
+      </List>
     </div>
   );
 };
