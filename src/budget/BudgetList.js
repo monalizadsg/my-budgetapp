@@ -6,6 +6,7 @@ import {
   LinearProgress,
   withStyles,
 } from "@material-ui/core";
+import Empty from "./../components/Empty";
 import "./BudgetList.scss";
 
 const BorderLinearProgress = withStyles((theme) => ({
@@ -107,7 +108,7 @@ const BudgetList = (props) => {
           {result}
         </>
       ) : (
-        <div className='empty-card'>No record found</div>
+        <Empty />
       )}
     </div>
   );
