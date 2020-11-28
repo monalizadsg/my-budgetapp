@@ -1,17 +1,18 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
-import Transactions from "../transactions/Transactions";
-import Budget from "../budget/Budget";
-import Login from "../components/Login";
-import Main from "../components/Main";
+import { Switch } from "react-router-dom";
+import Login from "../auth/Login";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import Transactions from "./../transactions/Transactions";
+import Budget from "./../budget/Budget";
 
 const AppRouter = () => {
   return (
     <Switch>
-      <Route path='/budget' component={Budget} />
-      <Route path='/' component={Transactions} />
-      <Route exact path='/' component={Main} />
-      <Route exact path='/login' component={Login} />
+      <PrivateRoute exact component={Transactions} path='/' />
+      <PrivateRoute component={Transactions} path='/transactions' />
+      <PublicRoute exact component={Login} path='/login' />
+      <PrivateRoute exact component={Budget} path='/budgets' />
     </Switch>
   );
 };
