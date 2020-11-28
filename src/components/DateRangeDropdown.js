@@ -18,7 +18,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  DialogContentText,
 } from "@material-ui/core";
 import DateFnsUtils from "@date-io/date-fns";
 import {
