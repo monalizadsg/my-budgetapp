@@ -172,8 +172,8 @@ class BudgetForm extends Component {
       category,
       errors,
       periodType,
-      customDate,
-      isOpen,
+      // customDate,
+      // isOpen,
       isEditing,
       isLoading,
     } = this.state;

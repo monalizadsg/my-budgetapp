@@ -1,7 +1,15 @@
 import React from "react";
 import { TextField } from "@material-ui/core";
 
-const TextInput = ({ type, name, label, value, onChange, error }) => {
+const TextInput = ({
+  type,
+  name,
+  label,
+  value,
+  onChange,
+  error,
+  fullWidth,
+}) => {
   return (
     <TextField
       type={type ? type : "text"}
@@ -14,6 +22,7 @@ const TextInput = ({ type, name, label, value, onChange, error }) => {
       onChange={onChange}
       error={!!error}
       helperText={error}
+      fullWidth={fullWidth}
     />
   );
 };
