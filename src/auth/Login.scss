@@ -1,0 +1,12 @@
+.login-wrapper {
+  width: 80%;
+  height: 100vh;
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+
+  .MuiButton-label {
+    color: #fff;
+  }
+}
