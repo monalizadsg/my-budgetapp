@@ -4,6 +4,7 @@ import groupBy from "lodash/groupBy";
 import { Card, List, ListItem, Divider } from "@material-ui/core";
 import "./TransactionList.scss";
 import Empty from "../components/Empty";
+import { formatAmount } from "../commons/utils";
 
 class TransactionList extends Component {
   computeTotal = (dataByDate) => {
@@ -24,17 +25,15 @@ class TransactionList extends Component {
     return computedTotal;
   };
 
-  renderTotal = (totalIncome, totalExpense, amountFormatter) => {
+  renderTotal = (totalIncome, totalExpense) => {
     return (
       <div className='transaction-total'>
-        <div className='total income'>
-          INCOME: {amountFormatter.format(totalIncome)}
-        </div>
+        <div className='total income'>INCOME: {formatAmount(totalIncome)}</div>
         <div className='total expense'>
-          EXPENSE: {amountFormatter.format(totalExpense)}
+          EXPENSE: {formatAmount(totalExpense)}
         </div>
         <div className='total balance'>
-          BALANCE: {amountFormatter.format(totalIncome - totalExpense)}
+          BALANCE: {formatAmount(totalIncome - totalExpense)}
         </div>
       </div>
     );
@@ -47,13 +46,8 @@ class TransactionList extends Component {
     }
 
     const dataByDate = groupBy(data, "date");
-    const amountFormatter = new Intl.NumberFormat("ms-MY", {
-      style: "currency",
-      currency: "MYR",
-      minimumFractionDigits: 2,
-    });
 
-    const header = this.renderTotal(totalIncome, totalExpense, amountFormatter);
+    const header = this.renderTotal(totalIncome, totalExpense);
 
     const result = Object.entries(dataByDate).map(([key, value], index) => {
       // console.log({ key, value });
@@ -68,7 +62,7 @@ class TransactionList extends Component {
               <div className='card-header'>
                 <div className='item-date'>{date}</div>
                 <div className='item-total'>
-                  <div>{amountFormatter.format(totalAmount)}</div>
+                  <div>{formatAmount(totalAmount)}</div>
                 </div>
               </div>
 
@@ -95,7 +89,7 @@ class TransactionList extends Component {
                           </p>
                         </div>
                         <div className='item' style={amountStyle}>
-                          {amountFormatter.format(amountItem)}
+                          {formatAmount(amountItem)}
                         </div>
                       </ListItem>
                     </List>

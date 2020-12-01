@@ -7,6 +7,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import Empty from "./../components/Empty";
+import { formatAmount } from "../commons/utils";
 import "./BudgetList.scss";
 
 const BorderLinearProgress = withStyles((theme) => ({
@@ -69,7 +70,9 @@ const BudgetList = (props) => {
                 <div className='details'>
                   <div className='item-title'>{item.category.name}</div>
                   <div className='item-amount'>
-                    <h4 className='budget-total'>{item.amountLimit}</h4>
+                    <h4 className='budget-total'>
+                      {formatAmount(item.amountLimit)}
+                    </h4>
                   </div>
                 </div>
                 <div className='sub-details'>
@@ -88,7 +91,7 @@ const BudgetList = (props) => {
                       }`}
                     >
                       {item.amountLeft < 0 ? "Overspent: " : "Left: "}
-                      {item.amountLeft}
+                      {formatAmount(item.amountLeft)}
                     </div>
                   </div>
                 </div>
