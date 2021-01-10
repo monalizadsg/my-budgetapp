@@ -33,7 +33,7 @@ const Login = () => {
 
     try {
       await login(email, password);
-      history.push("/");
+      history.push("/transactions");
     } catch (ex) {
       setError("Incorrect email or password");
     }
