@@ -7,7 +7,6 @@ import {
   DialogTitle,
   DialogContentText,
 } from "@material-ui/core";
-import Loading from "./Loading";
 
 const ConfirmDialog = ({ isOpen, onClose, onDelete, children, isLoading }) => {
   return (
@@ -24,7 +23,6 @@ const ConfirmDialog = ({ isOpen, onClose, onDelete, children, isLoading }) => {
         </Button>
         <Button onClick={onDelete} color='primary' disabled={isLoading}>
           Yes
-          <Loading isLoading={isLoading} size={16} />
         </Button>
       </DialogActions>
     </Dialog>

@@ -19,30 +19,10 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import "./DateRangeDropdown.scss";
+import DatePickerInput from "./DatePickerInput";
 
 const menuProps = {
-  classes: {
-    paper: {
-      borderRadius: 12,
-      marginTop: 8,
-    },
-    list: {
-      paddingTop: 0,
-      paddingBottom: 0,
-      background: "white",
-      "& li": {
-        fontWeight: 200,
-        paddingTop: 12,
-        paddingBottom: 12,
-      },
-    },
-  },
   anchorOrigin: {
     vertical: "bottom",
     horizontal: "left",
@@ -142,7 +122,7 @@ class DateRangeDropdown extends Component {
           style={{ minWidth: "180px" }}
           size='small'
         >
-          <InputLabel htmlFor='category'>Date range</InputLabel>
+          <InputLabel htmlFor='dateRange'>Date range</InputLabel>
           <Select
             label='Date Range'
             name='dateRange'
@@ -190,40 +170,20 @@ const CustomDateRangeDialog = ({
 }) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle id='alert-dialog-title' dividers>
+      <DialogTitle id='alert-dialog-title' dividers='true'>
         Custom
       </DialogTitle>
       <DialogContent>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            autoOk
-            variant='inline'
-            size='medium'
-            inputVariant='outlined'
-            label='Start Date'
-            format='yyyy/MM/dd'
-            value={startDate}
-            InputAdornmentProps={{ position: "start" }}
-            onChange={onStartDateChange}
-            // error={errors.date}
-            // helperText={errors.date}
-          />
-        </MuiPickersUtilsProvider>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            autoOk
-            variant='inline'
-            size='medium'
-            inputVariant='outlined'
-            label='End Date'
-            format='yyyy/MM/dd'
-            value={endDate}
-            InputAdornmentProps={{ position: "start" }}
-            onChange={onEndDateChange}
-            // error={errors.date}
-            // helperText={errors.date}
-          />
-        </MuiPickersUtilsProvider>
+        <DatePickerInput
+          label='Start Date'
+          value={startDate}
+          onDateChange={onStartDateChange}
+        />
+        <DatePickerInput
+          label='End Date'
+          value={endDate}
+          onDateChange={onEndDateChange}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color='primary'>

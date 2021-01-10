@@ -4,22 +4,6 @@ import { FormControl, Select, InputLabel, MenuItem } from "@material-ui/core";
 import "./DateRangeDropdown.scss";
 
 const menuProps = {
-  classes: {
-    paper: {
-      borderRadius: 12,
-      marginTop: 8,
-    },
-    list: {
-      paddingTop: 0,
-      paddingBottom: 0,
-      background: "white",
-      "& li": {
-        fontWeight: 200,
-        paddingTop: 12,
-        paddingBottom: 12,
-      },
-    },
-  },
   anchorOrigin: {
     vertical: "bottom",
     horizontal: "left",
@@ -71,7 +55,7 @@ class PeriodTypeDropdown extends Component {
           style={{ minWidth: "180px" }}
           size='small'
         >
-          <InputLabel htmlFor='category'>Period</InputLabel>
+          <InputLabel htmlFor='period'>Period</InputLabel>
           <Select
             label='Period'
             name='period'

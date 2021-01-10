@@ -27,7 +27,7 @@ const SideNav = () => {
         className='side-navbar'
       >
         {navLinks.map(({ title, path, icon }) => (
-          <NavLink to={path} activeClassName='active'>
+          <NavLink key={title} to={path} activeClassName='active'>
             <ListItem className='side-navbar-item'>
               {icon} {title}
             </ListItem>

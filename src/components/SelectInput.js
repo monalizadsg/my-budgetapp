@@ -8,14 +8,10 @@ import {
 
 const SelectInput = ({ name, label, value, error, onChange, children }) => {
   return (
-    <FormControl
-      variant='outlined'
-      style={{ minWidth: "200px" }}
-      size='medium'
-      error={error}
-    >
-      <InputLabel htmlFor={name}>{label}</InputLabel>
+    <FormControl variant='outlined' error={!!error}>
+      <InputLabel id={name}>{label}</InputLabel>
       <Select
+        labelId={name}
         label={label}
         name={name}
         id={name}
