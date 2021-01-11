@@ -2,20 +2,13 @@ import React, { Component } from "react";
 import BudgetForm from "./BudgetForm";
 import { getCategories } from "../transactions/transactionsService";
 import { getBudgetBalances } from "./budgetService";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 import "./Budget.scss";
 import BudgetList from "./BudgetList";
 import PeriodTypeDropdown from "../components/PeriodTypeDropdown";
 import { format } from "date-fns";
 import Loading from "../components/Loading";
 import Toast from "../components/Toast";
+import FormDialog from "../components/FormDialog";
 
 class Budget extends Component {
   state = {
@@ -51,6 +44,7 @@ class Budget extends Component {
     const budgetBalances = await getBudgetBalances(type, startDate);
     this.setState({
       budgetBalances: budgetBalances.data,
+      isLoading: false,
     });
   };
 
@@ -77,9 +71,11 @@ class Budget extends Component {
   };
 
   onClickBudget = (item) => {
-    this.setState({ selectedBudget: item }, () => {
-      this.setState({ isOpen: true });
-    });
+    this.setState({ selectedBudget: item });
+  };
+
+  onClickEdit = () => {
+    this.setState({ isOpen: true });
   };
 
   filterBudget = async (period) => {
@@ -93,7 +89,7 @@ class Budget extends Component {
   };
 
   render() {
-    const { selectedBudget, isLoading } = this.state;
+    const { selectedBudget, isLoading, categories } = this.state;
     const { isOpen, message } = this.state.toastMessage;
 
     if (isLoading) {
@@ -113,47 +109,28 @@ class Budget extends Component {
         </div>
         <BudgetList
           data={this.state.budgetBalances}
+          categories={categories}
           onClickBudget={this.onClickBudget}
+          onClickEdit={this.onClickEdit}
+          isLoading={isLoading}
+          updateData={this.updateData}
+          showToast={this.showToast}
         />
-        <Dialog
-          open={this.state.isOpen}
+
+        <FormDialog
+          isOpen={this.state.isOpen}
           onClose={this.closeModal}
-          fullWidth
-          maxWidth='xs'
-          disableBackdropClick
+          title={!selectedBudget ? "Add Budget" : "Edit Budget"}
         >
-          <DialogTitle>
-            {!selectedBudget ? (
-              <Typography variant='h6'>Add Budget</Typography>
-            ) : (
-              <>
-                <Typography variant='h6'>Edit/Delete Budget</Typography>
-                <IconButton
-                  edge='end'
-                  color='inherit'
-                  onClick={this.closeModal}
-                  aria-label='close'
-                >
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )}
-          </DialogTitle>
-          <DialogContent>
-            <BudgetForm
-              categories={this.state.categories}
-              closeModal={this.closeModal}
-              updateData={this.updateData}
-              selectedBudget={selectedBudget}
-              // onSaveSuccess={
-              //   selectedTransaction
-              //     ? this.handleUpdateSuccess
-              //     : this.handleCreateSuccess
-              // }
-              showToast={this.showToast}
-            />
-          </DialogContent>
-        </Dialog>
+          <BudgetForm
+            data={this.state.budgetBalances}
+            categories={categories}
+            closeModal={this.closeModal}
+            updateData={this.updateData}
+            selectedBudget={selectedBudget}
+            showToast={this.showToast}
+          />
+        </FormDialog>
 
         <Toast message={message} open={isOpen} onClose={this.closeToast} />
       </div>

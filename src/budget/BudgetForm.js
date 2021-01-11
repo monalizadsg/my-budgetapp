@@ -8,9 +8,8 @@ import {
   // DialogTitle,
 } from "@material-ui/core";
 // import { format } from "date-fns";
-import { createBudget, updateBudget, deleteBudget } from "./budgetService";
+import { createBudget, updateBudget } from "./budgetService";
 // import DatePickerInput from "./../common/DatePickerInput";
-import ConfirmDialog from "../components/ConfirmDialog";
 import FormActions from "../components/FormActions";
 import SelectInput from "../components/SelectInput";
 import TextInput from "../components/TextInput";
@@ -26,17 +25,15 @@ const periodRange = {
 class BudgetForm extends Component {
   state = {
     amountLimit: "",
-    // category: "",
     category: "",
     periodType: "",
     errors: {},
-    isOpen: false,
+    // isOpen: false,
     // customDate: {
     //   startDate: format(new Date(), "yyyy-MM-dd"),
     //   endDate: format(new Date(), "yyyy-MM-dd"),
     // },
     isEditing: false,
-    openConfirmDialog: false,
     isLoading: false,
   };
 
@@ -44,32 +41,33 @@ class BudgetForm extends Component {
     this.getSelectedBudget();
   }
 
-  getSelectedBudget() {
+  getSelectedBudget = () => {
     const { selectedBudget } = this.props;
+
     if (selectedBudget) {
       this.setState({
-        // category: selectedBudget.category.id,
         category: selectedBudget.category.id,
         amountLimit: selectedBudget.amountLimit,
         periodType: selectedBudget.periodType,
         isEditing: true,
       });
     }
-  }
-
-  showConfirmDialog = () => {
-    this.setState({ openConfirmDialog: true });
-  };
-
-  closeConfirmDialog = () => {
-    this.setState({ openConfirmDialog: false });
-    this.props.closeModal();
   };
 
   validateForm = () => {
     const { amountLimit, category, periodType } = this.state;
+    const { data } = this.props;
+
     let errors = {};
     let isValid = true;
+
+    //check if budget is already created by period
+    data.forEach((item) => {
+      if (item.category.id === category && item.periodType === periodType) {
+        errors.periodType = "Budget is already existed.";
+        errors.category = "Budget is already existed.";
+      }
+    });
 
     if (amountLimit === "") {
       errors.amountLimit = "This field is required";
@@ -112,30 +110,21 @@ class BudgetForm extends Component {
     let upsertPromise = null;
     if (selectedBudget?.id) {
       upsertPromise = updateBudget(budgetData, selectedBudget?.id);
+      this.props.showToast("Budget transaction is updated!");
     } else {
       upsertPromise = createBudget(budgetData);
+      this.props.showToast("Budget transaction is added!");
     }
 
     try {
       await upsertPromise;
       this.props.updateData();
       this.props.closeModal();
-      this.props.showToast("Budget transaction is successful!");
     } catch (error) {
       // TODO: display error to the user (pop-up)
       console.log(error);
     }
-
-    // this.setState({ isLoading: false });
   };
-
-  // showDialog = () => {
-  //   this.setState({ isOpen: true });
-  // };
-
-  // closeDialog = () => {
-  //   this.setState({ isOpen: false });
-  // };
 
   // handleStartDateChange = (date) => {
   //   const customDate = { ...this.state.customDate };
@@ -156,16 +145,6 @@ class BudgetForm extends Component {
     });
   };
 
-  handleDelete = async () => {
-    this.setState({ isLoading: true });
-
-    const budgetId = this.props.selectedBudget.id;
-    await deleteBudget(budgetId);
-    this.props.updateData();
-    this.props.closeModal();
-    this.props.showToast("Budget is successfully deleted!");
-  };
-
   render() {
     const {
       amountLimit,
@@ -178,13 +157,6 @@ class BudgetForm extends Component {
       isLoading,
     } = this.state;
     const { categories, closeModal } = this.props;
-
-    const mappedCategory = categories.filter((item) => item.id === category);
-    const budget = {
-      category: mappedCategory[0]?.name,
-      amountLimit: amountLimit,
-      periodType: periodType,
-    };
 
     return (
       <div className='budget-form-wrapper'>
@@ -239,7 +211,6 @@ class BudgetForm extends Component {
             onClose={closeModal}
             isLoading={isLoading}
             onSubmit={this.handleSubmit}
-            onShowDialog={this.showConfirmDialog}
           />
         </form>
         {/* <CustomDateRangeDialog
@@ -251,18 +222,6 @@ class BudgetForm extends Component {
           endDate={customDate.endDate}
           // onChangeCustomDateRange={this.onGetCustomDates}
         /> */}
-        <ConfirmDialog
-          isOpen={this.state.openConfirmDialog}
-          onClose={this.closeConfirmDialog}
-          onDelete={this.handleDelete}
-          isLoading={isLoading}
-        >
-          <div>
-            <p>Category: {budget.category}</p>
-            <p>Amount: {budget.amountLimit}</p>
-            <p>Period: {budget.periodType}</p>
-          </div>
-        </ConfirmDialog>
       </div>
     );
   }
@@ -284,7 +243,7 @@ class BudgetForm extends Component {
 //       </DialogTitle>
 //       <DialogContent>
 //         <DatePickerInput
-//           label='End Date'
+//           label='Start Date'
 //           value={startDate}
 //           onDateChange={onStartDateChange}
 //           // error={errors.date}
