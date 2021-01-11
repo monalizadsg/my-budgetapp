@@ -1,126 +1,157 @@
-//same with trnx list
 .budget-list {
+  .budget-list-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 15px;
+    font-weight: 500;
+
+    .item-date {
+      color: #b1b1b1;
+    }
+  }
+
   .budget-list-card {
     // border: green solid 1px;
     margin-top: 20px;
-
-    .card-header {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-      align-items: center;
-      padding: 0 20px;
-      font-size: 15px;
-      font-weight: 500;
-
-      .item-date {
-        color: #b1b1b1;
-      }
-    }
+    width: 100%;
 
     .card-item {
       // border: red 1px solid;
       border-radius: 6px;
-      border: 1px solid #e5e9ed;
-      transition: box-shadow 0.2s;
-      // height: 120px;
 
-      &:hover {
-        cursor: pointer;
-        box-shadow: 0 4px 10px 0 rgba(93, 130, 170, 0.21);
-        border: 1px solid rgba(108, 123, 138, 0.2);
-      }
-
-      .MuiList-padding {
-        padding-top: 0;
-        padding-bottom: 0;
-      }
-    }
-
-    .list-item {
-      // border: red 1px solid;
-      display: flex;
-      flex-direction: column;
-
-      // flex-direction: column;
-
-      .details {
-        width: 100%;
-        // border: solid 1px green;
+      .list-item {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
+        padding: 10px 0;
+        padding-left: 15px;
 
-        .item-title {
-          font-weight: 400;
-          color: #262626;
-        }
+        .left-col {
+          width: 95%;
 
-        .item-amount {
-          text-align: end;
-        }
-      }
-
-      .sub-details {
-        width: 100%;
-        margin-top: 5px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        .left {
-          width: 40px;
-          height: 40px;
-          background-color: pink;
-          border-radius: 50%;
-          display: flex;
-          justify-content: flex-start;
-          align-items: flex-start;
-        }
-
-        .right {
-          display: flex;
-          flex-direction: column;
-          width: 85%;
-          .progress-bar {
-            // border: 2px solid orange;
+          .details {
             width: 100%;
-            margin-top: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
 
-            .reach-progress-limit {
-              .MuiLinearProgress-bar {
-                background-color: #f44336;
+            .item-title {
+              font-weight: 400;
+              color: #262626;
+            }
+
+            .item-amount {
+              text-align: end;
+            }
+          }
+
+          .sub-details {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .left {
+              width: 30px;
+              height: 30px;
+              background-color: pink;
+              border-radius: 50%;
+              display: flex;
+              justify-content: flex-start;
+              align-items: flex-start;
+            }
+
+            .right {
+              display: flex;
+              flex-direction: column;
+              width: 90%;
+              padding-left: 5px;
+
+              .progress-bar {
+                width: 100%;
+                margin-top: 10px;
+
+                .reach-progress-limit {
+                  .MuiLinearProgress-bar {
+                    background-color: #f44336;
+                  }
+                }
+              }
+              .amount-left {
+                display: flex;
+                align-self: flex-end;
+                font-size: 11px;
+                margin-top: 3px;
+
+                &.overspent {
+                  color: #f44336;
+                  // border: 1px solid red;
+                }
               }
             }
-
-            .tooltip {
-              border: 1px solid red;
-            }
           }
-          .amount-left {
-            display: flex;
-            align-self: flex-end;
-            font-size: 12px;
-            margin-top: 5px;
+        }
 
-            &.overspent {
-              color: #f44336;
+        .right-col {
+          width: 5%;
+          color: #808080;
+
+          .more-icon {
+            width: 20px;
+            margin: auto;
+            display: flex;
+
+            &:hover {
+              cursor: pointer;
             }
           }
         }
       }
     }
-
-    // .MuiList-padding {
-    //   padding-top: 2px;
-    //   padding-bottom: 2px;
-    // }
 
     .MuiPaper-rounded {
       margin-bottom: 10px;
+    }
+  }
+}
+
+.budget-transactions-modal-content {
+  .date-range {
+    text-align: center;
+    padding-top: 20px;
+    color: #808080;
+  }
+
+  .amount-wrapper {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  .amount-limit {
+    font-weight: 600;
+  }
+
+  .total-expense {
+    color: red;
+    font-size: 1.1em;
+  }
+
+  .no-data {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .list {
+    .list-item {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }

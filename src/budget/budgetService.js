@@ -10,6 +10,10 @@ export async function getBudgetBalances(period, startDate) {
   );
 }
 
+export async function getBudgetTransactions(id, startDate) {
+  return await api.get(`/v1/budgets/${id}/transactions?startDate=${startDate}`);
+}
+
 export async function createBudget(data) {
   return await api.post("/v1/budgets", data);
 }
