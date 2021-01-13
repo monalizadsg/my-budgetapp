@@ -9,11 +9,7 @@ const PublicRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated() ? (
-          <Redirect to='/transactions' />
-        ) : (
-          <Component {...props} />
-        )
+        isAuthenticated() ? <Redirect to='/' /> : <Component {...props} />
       }
     />
   );

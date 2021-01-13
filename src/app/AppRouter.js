@@ -10,7 +10,8 @@ import Signup from "./../auth/Signup";
 const AppRouter = () => {
   return (
     <Switch>
-      <PrivateRoute component={Transactions} path='/transactions' />
+      <PrivateRoute exact component={Transactions} path='/' />
+      <PrivateRoute exact component={Transactions} path='/transactions' />
       <PublicRoute component={Login} path='/login' />
       <PublicRoute component={Signup} path='/signup' />
       <PrivateRoute component={Budget} path='/budgets' />
