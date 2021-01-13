@@ -27,32 +27,38 @@
 }
 
 .transaction-list {
-  .transaction-list-card {
-    margin-top: 20px;
+  margin-top: 20px;
 
-    .card-header {
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: flex-end;
+    padding: 0 20px;
+    font-size: 15px;
+    font-weight: 500;
+
+    .item-date {
+      color: #b1b1b1;
+    }
+  }
+
+  .card-item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+
+    .left-col {
+      width: 95%;
+      margin-left: 8px;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 5px;
-      align-items: flex-end;
-      padding: 0 20px;
-      font-size: 15px;
-      font-weight: 500;
-
-      .item-date {
-        color: #b1b1b1;
-      }
-    }
-
-    .card-item {
-      &:hover {
-        cursor: pointer;
-      }
-    }
-
-    .list-item {
-      display: flex;
-      justify-content: space-between;
+      align-items: center;
 
       .item-title {
         font-weight: 400;
@@ -60,13 +66,25 @@
       }
 
       .item-subcategory {
-        font-size: 14px;
+        font-size: 13px;
+        color: #808080;
       }
     }
 
-    .MuiPaper-rounded {
-      border-radius: 0;
+    .right-col {
+      width: 5%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .more-icon {
+        color: #808080;
+      }
     }
+  }
+
+  .MuiPaper-rounded {
+    border-radius: 0;
   }
 }
 
