@@ -78,11 +78,13 @@ const BudgetList = (props) => {
     setSelectedBudget(null);
     setIsDeleteModalOpen(false);
     setIsLoading(false);
+    props.onClickBudget(null);
   };
 
   const closeTransactionsModal = () => {
     setSelectedBudget(null);
     setIsTransactionsModalOpen(false);
+    props.onClickBudget(null);
   };
 
   const handleEdit = () => {
