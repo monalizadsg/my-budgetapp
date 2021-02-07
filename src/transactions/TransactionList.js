@@ -61,6 +61,7 @@ const TransactionList = (props) => {
     setIsDeleteModalOpen(false);
     setSelectedTransaction(null);
     setIsLoading(false);
+    props.onClickTransaction(null);
   };
 
   const handleEdit = () => {
@@ -183,7 +184,6 @@ const TransactionList = (props) => {
                 </Card>
               );
             })}
-            s{" "}
             <Modal
               openModal={isDeleteModalOpen}
               onCloseModal={closeDeleteModal}

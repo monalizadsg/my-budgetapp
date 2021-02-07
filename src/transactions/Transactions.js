@@ -1,23 +1,14 @@
 import React, { Component } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Typography,
-} from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
-import CloseIcon from "@material-ui/icons/Close";
-
 import { format, startOfWeek, endOfWeek } from "date-fns";
-
 import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
 import DateRangeDropdown from "../components/DateRangeDropdown";
+import Pagination from "@material-ui/lab/Pagination";
 import { getTransactions, getCategories } from "./transactionsService";
 import Loading from "../components/Loading";
 import "./Transactions.scss";
 import Toast from "../components/Toast";
+import FormDialog from "./../components/FormDialog";
 
 class Transactions extends Component {
   state = {
@@ -45,7 +36,7 @@ class Transactions extends Component {
   async componentDidMount() {
     const { startDate, endDate } = this.state.selectedDateRange;
     const data = await getTransactions(startDate, endDate);
-    console.log(data);
+    // console.log(data);
     const categories = await getCategories();
     this.setState({
       data: data.transactions,
@@ -108,6 +99,7 @@ class Transactions extends Component {
   closeToast = () => {
     let toastMessage = { ...this.state.toastMessage };
     toastMessage.isOpen = false;
+    toastMessage.message = "";
     this.setState({ toastMessage });
   };
 
@@ -120,9 +112,11 @@ class Transactions extends Component {
   };
 
   onClickTransaction = (transaction) => {
-    this.setState({ selectedTransaction: transaction }, () => {
-      this.setState({ isOpen: true });
-    });
+    this.setState({ selectedTransaction: transaction });
+  };
+
+  onClickEdit = () => {
+    this.setState({ isOpen: true });
   };
 
   handlePageChange = (event, value) => {
@@ -145,6 +139,21 @@ class Transactions extends Component {
       totalIncome: data.totalIncome,
       totalExpense: data.totalExpense,
     });
+  };
+
+  renderDate = () => {
+    const { selectedDateRange } = this.state;
+    const startDate = format(
+      new Date(selectedDateRange.startDate),
+      "dd MMMM yyyy"
+    );
+    const endDate = format(new Date(selectedDateRange.endDate), "dd MMMM yyyy");
+
+    return (
+      <div>
+        {startDate} - {endDate}
+      </div>
+    );
   };
 
   render() {
@@ -181,15 +190,19 @@ class Transactions extends Component {
             </button>
           </div>
         </div>
+        <div className='date'>{this.renderDate()}</div>
         <div>
           <TransactionList
             data={data}
             onClickTransaction={this.onClickTransaction}
+            onClickEdit={this.onClickEdit}
             totalIncome={totalIncome}
             totalExpense={totalExpense}
+            updateData={this.updateData}
+            showToast={this.showToast}
           />
         </div>
-        <div className='paginatiton'>
+        <div className='pagination'>
           {data.length > 0 && totalPages > 1 && (
             <Pagination
               count={totalPages}
@@ -201,45 +214,25 @@ class Transactions extends Component {
           )}
         </div>
         <Toast message={message} open={isOpen} onClose={this.closeToast} />
-        <Dialog
-          open={this.state.isOpen}
+
+        <FormDialog
+          isOpen={this.state.isOpen}
           onClose={this.closeModal}
-          fullWidth
-          maxWidth='xs'
-          disableBackdropClick
+          title={!selectedTransaction ? "Add Transaction" : "Edit Transaction"}
         >
-          <DialogTitle>
-            {!selectedTransaction ? (
-              <Typography variant='h6'>Add Transaction</Typography>
-            ) : (
-              <>
-                <Typography variant='h6'>Edit/Delete Transaction</Typography>{" "}
-                <IconButton
-                  edge='end'
-                  color='inherit'
-                  onClick={this.closeModal}
-                  aria-label='close'
-                >
-                  <CloseIcon />
-                </IconButton>
-              </>
-            )}
-          </DialogTitle>
-          <DialogContent>
-            <TransactionForm
-              categories={categories}
-              closeModal={this.closeModal}
-              updateData={this.updateData}
-              selectedTransaction={selectedTransaction}
-              onSaveSuccess={
-                selectedTransaction
-                  ? this.handleUpdateSuccess
-                  : this.handleCreateSuccess
-              }
-              showToast={this.showToast}
-            />
-          </DialogContent>
-        </Dialog>
+          <TransactionForm
+            categories={categories}
+            closeModal={this.closeModal}
+            updateData={this.updateData}
+            selectedTransaction={selectedTransaction}
+            onSaveSuccess={
+              selectedTransaction
+                ? this.handleUpdateSuccess
+                : this.handleCreateSuccess
+            }
+            showToast={this.showToast}
+          />
+        </FormDialog>
       </div>
     );
   }

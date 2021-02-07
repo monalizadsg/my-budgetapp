@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import {
-  createTransaction,
-  updateTransaction,
-  deleteTransaction,
-} from "./transactionsService";
+import { createTransaction, updateTransaction } from "./transactionsService";
 import DatePickerInput from "../components/DatePickerInput";
-import ConfirmDialog from "../components/ConfirmDialog";
 import SelectInput from "../components/SelectInput";
 import FormActions from "../components/FormActions";
 import TextInput from "../components/TextInput";
@@ -21,7 +16,6 @@ class TransactionForm extends Component {
     date: format(new Date(), "yyyy-MM-dd"),
     errors: {},
     isEditing: false,
-    openConfirmDialog: false,
     isLoading: false,
   };
 
@@ -79,25 +73,6 @@ class TransactionForm extends Component {
     }
   };
 
-  showConfirmDialog = () => {
-    this.setState({ openConfirmDialog: true });
-  };
-
-  closeConfirmDialog = () => {
-    this.setState({ openConfirmDialog: false });
-    this.props.closeModal();
-  };
-
-  handleDelete = async () => {
-    this.setState({ isLoading: true });
-
-    const transactionId = this.props.selectedTransaction.id;
-    await deleteTransaction(transactionId);
-    this.props.updateData();
-    this.props.closeModal();
-    this.props.showToast("Transaction is successfully deleted!");
-  };
-
   validateForm = () => {
     const { description, amount, category, date } = this.state;
     let errors = {};
@@ -147,15 +122,9 @@ class TransactionForm extends Component {
       date,
       errors,
       isEditing,
-      openConfirmDialog,
       isLoading,
     } = this.state;
 
-    const transaction = {
-      description: description,
-      amount: amount,
-      date: date,
-    };
     return (
       <>
         <div className='transaction-form-wrapper'>
@@ -207,19 +176,6 @@ class TransactionForm extends Component {
             />
           </form>
         </div>
-
-        <ConfirmDialog
-          isOpen={openConfirmDialog}
-          onClose={this.closeConfirmDialog}
-          onDelete={this.handleDelete}
-          isLoading={isLoading}
-        >
-          <div>
-            <p>Description: {transaction.description}</p>
-            <p>Amount: {transaction.amount}</p>
-            <p>Date: {transaction.date}</p>
-          </div>
-        </ConfirmDialog>
       </>
     );
   }

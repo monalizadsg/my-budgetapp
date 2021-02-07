@@ -1,10 +1,12 @@
 .transaction-container {
   width: 100%;
+  min-width: 80%;
   height: 100%;
   padding-left: 20px;
 
   .header {
     display: flex;
+    flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
@@ -22,7 +24,15 @@
     }
   }
 
-  .paginatiton {
+  .date {
+    padding-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    color: #808080;
+    text-transform: uppercase;
+  }
+
+  .pagination {
     display: flex;
     justify-content: center;
     margin-top: 20px;
