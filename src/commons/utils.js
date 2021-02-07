@@ -1,7 +1,7 @@
 export function formatAmount(value) {
-  const amountFormatter = new Intl.NumberFormat("ms-MY", {
+  const amountFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "MYR",
+    currency: "PHP",
     minimumFractionDigits: 2,
   });
 
