@@ -4,7 +4,6 @@ import { logout } from "../auth/authService";
 import {
   Container,
   AppBar,
-  Toolbar,
   List,
   Menu,
   MenuItem,
@@ -21,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "65%",
     margin: "auto",
+    padding: "0",
   },
   logoText: {
     textDecoration: "none",
@@ -72,33 +72,34 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <>
       <AppBar position='static' className={classes.appBar}>
-        <Toolbar>
-          <Container className={classes.navbarDisplayFlex}>
-            <Typography variant='h6' className={classes.logoText}>
-              BudgetApp
-            </Typography>
-            <List component='nav' aria-labelledby='main navigation'>
-              <AccountCircleIcon
-                fontSize='large'
-                color='primary'
-                onClick={handleClick}
-              />
-              <StyledMenu
-                id='simple-menu'
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </StyledMenu>
-            </List>
-          </Container>
-        </Toolbar>
+        <Container
+          maxWidth={false}
+          className={`nav-header ${classes.navbarDisplayFlex}`}
+        >
+          <Typography variant='h6' className={classes.logoText}>
+            BudgetApp
+          </Typography>
+          <List component='nav' aria-labelledby='main navigation'>
+            <AccountCircleIcon
+              fontSize='large'
+              color='primary'
+              onClick={handleClick}
+            />
+            <StyledMenu
+              id='simple-menu'
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </StyledMenu>
+          </List>
+        </Container>
       </AppBar>
-    </div>
+    </>
   );
 };
 

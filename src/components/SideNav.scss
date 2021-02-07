@@ -1,12 +1,7 @@
 .side-nav-container {
   float: left;
   width: 20%;
-
-  // .side-navbar-list {
-  //   list-style-type: none;
-  //   width: 100%;
-  //   display: block;
-  // }
+  min-width: 20%;
 
   .side-navbar {
     a {
@@ -18,15 +13,11 @@
       color: #1e997e;
       font-weight: 600;
     }
-    // .link {
-    //   text-decoration: none;
-    // }
 
     .side-navbar-item {
       width: 100%;
       padding: 12px 0;
       font-size: 16px;
-      // color: #808080;
       border-radius: 10px;
 
       .icon {
@@ -35,36 +26,4 @@
       }
     }
   }
-
-  // .active {
-  //   width: 100%;
-  //   height: inherit;
-  //   background-color: #f1f1f1;
-  //   color: #000;
-  //   border-bottom: 1px solid red;
-  // }
-
-  // .side-navbar-item {
-  //   width: 60%;
-  //   padding: 12px 0;
-
-  //   a {
-  //     width: 100%;
-  //     text-decoration: none;
-  //     font-size: 16px;
-  //     padding: 10px 16px;
-  //     color: #808080;
-  //     border-radius: 5px;
-  //   }
-
-  //   .icon {
-  //     margin-right: 10px;
-  //   }
-  // }
-
-  // .active {
-  //   width: 100%;
-  //   background-color: #f1f1f1;
-  //   color: #000;
-  // }
 }
