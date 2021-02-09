@@ -2,7 +2,7 @@
 ## HomeExpensify | Expense Tracker
 
 A simple web application to track income and expenses. 
-Our motivation to build this project is to create something that we can use in a day-to-day basis. We (I and my husband) decided to make this personal project as we want manage our finances. He built the backend API, and I developed the frontend. It has the functionalities that we need like add, update and remove expenses/income, and set a budget by category with a set of period (weekly, monthly and yearly). Moreover, there are features currently in the pipeline that we plan to add.
+Our motivation to build this project is to create something that we can use in a day-to-day basis. We (I and my husband) decided to create this personal project as we want to manage our finances. He built the backend API, and I developed the frontend. It has the functionalities that we need like add, update and remove expenses/income, and set a budget by category with a set of period (weekly, monthly and yearly). Moreover, there are features currently in the pipeline that we plan to add.
 
 
 ### Tech stack: 
