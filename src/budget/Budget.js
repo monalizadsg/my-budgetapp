@@ -93,7 +93,7 @@ class Budget extends Component {
     const { isOpen, message } = this.state.toastMessage;
 
     if (isLoading) {
-      return <Loading isLoading={isLoading} />;
+      return <Loading isLoading={isLoading} size={40} />;
     }
 
     return (
