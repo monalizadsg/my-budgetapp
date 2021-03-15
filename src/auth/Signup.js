@@ -94,7 +94,7 @@ const Signup = () => {
       <div className='welcome'>
         <Container className={classes.welcomeDisplay} maxWidth='xs'>
           <Typography variant='h4' className='title'>
-            Welcome to BudgetApp
+            Welcome to HomeExpensify
           </Typography>
           <Typography variant='p' className='detail'>
             Track all your expenses and manage your budgets!

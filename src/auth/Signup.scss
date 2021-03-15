@@ -1,19 +1,19 @@
 .signup-wrapper {
   display: flex;
   flex-direction: row;
-  width: 80%;
+  width: 65%;
   margin: auto;
   height: 100vh;
 
   .welcome {
-    width: 50%;
-    // border: 1px solid red;
+    width: 60%;
     display: flex;
     align-items: center;
     justify-content: center;
 
     .title {
       color: #22aa8d;
+      font-size: 1.85rem;
       font-weight: 600;
       letter-spacing: 0.025em;
     }
@@ -25,12 +25,11 @@
     }
 
     .image {
-      // border: 1px solid red;
       margin-top: 35px;
     }
   }
   .form {
-    width: 50%;
+    width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,7 +40,6 @@
 
       .description {
         font-size: 16px;
-        // font-weight: 500;
         margin-top: 10px;
 
         .link a {
