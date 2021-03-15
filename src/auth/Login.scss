@@ -1,12 +1,59 @@
-.login-wrapper {
-  width: 80%;
-  height: 100vh;
+.login {
   display: flex;
-  margin: auto;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  width: 70%;
+  margin: auto;
+  height: 100vh;
 
   .MuiButton-label {
     color: #fff;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 40px;
+
+    .no-account {
+      color: #808080;
+      font-size: 16px;
+
+      .link {
+        color: #22aa8d;
+        font-weight: 400;
+        text-decoration: none;
+
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .login-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin-top: 30px;
+
+    .form {
+      .title {
+        font-size: 18px;
+        padding-bottom: 10px;
+        text-align: center;
+      }
+    }
+
+    .welcome {
+      width: 60%;
+      .image {
+        height: 550px;
+        width: 500px;
+      }
+    }
   }
 }
