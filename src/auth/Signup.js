@@ -5,6 +5,7 @@ import TextInput from "../components/TextInput";
 import { makeStyles } from "@material-ui/core/styles";
 import piggy from "../images/piggy.svg";
 import "./Signup.scss";
+import TextInputWithIcon from "../components/TextInputWithIcon";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,11 +33,20 @@ const Signup = () => {
     confirmPassword: "",
   };
   const [user, setUser] = useState(initialUserInput);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState({});
 
   const handleInputChange = ({ target: input }) => {
     const { name, value } = input;
     setUser({ ...user, [name]: value });
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const handleClickShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const handleSubmit = async (event) => {
@@ -96,7 +106,7 @@ const Signup = () => {
           <Typography variant='h4' className='title'>
             Welcome to HomeExpensify
           </Typography>
-          <Typography variant='p' className='detail'>
+          <Typography variant='body1' className='detail'>
             Track all your expenses and manage your budgets!
           </Typography>
           <img src={piggy} width='400px' alt='Piggy bank' className='image' />
@@ -109,7 +119,7 @@ const Signup = () => {
               <Typography variant='h4' className='title'>
                 Create your account
               </Typography>
-              <Typography variant='p' className='description'>
+              <Typography variant='body1' className='description'>
                 Already have an account?{" "}
                 <span className='link'>
                   <Link to='/login'>Sign in</Link>
@@ -152,25 +162,21 @@ const Signup = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextInput
-                        fullWidth
-                        type='password'
+                      <TextInputWithIcon
                         name='password'
-                        label='Password'
+                        showPassword={showPassword}
                         value={user.password}
                         onChange={handleInputChange}
-                        error={error.password}
+                        onClick={handleClickShowPassword}
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextInput
-                        fullWidth
-                        type='password'
+                      <TextInputWithIcon
                         name='confirmPassword'
-                        label='Confirm Password'
+                        showPassword={showConfirmPassword}
                         value={user.confirmPassword}
                         onChange={handleInputChange}
-                        error={error.confirmPassword}
+                        onClick={handleClickShowConfirmPassword}
                       />
                     </Grid>
                   </Grid>

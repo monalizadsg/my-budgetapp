@@ -7,7 +7,9 @@ import { login } from "./authService";
 import { useHistory } from "react-router-dom";
 import piggyBank from "../images/piggy_bank.png";
 import "./Login.scss";
-import Loading from "../components/Loading";
+import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
+
+import TextInputWithIcon from "../components/TextInputWithIcon";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   welcomeDisplay: {
     padding: theme.spacing(3),
-    height: 550,
+    height: 450,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -30,6 +32,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
   const classes = useStyles();
 
@@ -49,6 +52,7 @@ const Login = () => {
       history.push("/transactions");
     } catch (ex) {
       setError("Incorrect email or password");
+      setIsLoading(false);
     }
   };
 
@@ -75,9 +79,18 @@ const Login = () => {
     return true;
   };
 
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleCloseLoading = () => {
+    setIsLoading(false);
+  };
+
   return (
     <React.Fragment>
       <div className='login'>
+        <LoadingWithBackdrop open={isLoading} onClose={handleCloseLoading} />
         <div className='header'>
           <Typography variant='h6' className='logo'>
             HomeExpensify
@@ -115,13 +128,11 @@ const Login = () => {
                           />
                         </Grid>
                         <Grid item xs={12}>
-                          <TextInput
-                            fullWidth
-                            type='password'
-                            name='password'
-                            label='Password'
+                          <TextInputWithIcon
+                            showPassword={showPassword}
                             value={password}
                             onChange={handlePasswordChange}
+                            onClick={handleClickShowPassword}
                           />
                         </Grid>
                       </Grid>
@@ -135,13 +146,6 @@ const Login = () => {
                         disabled={isLoading}
                       >
                         {!isLoading ? "Login" : "Logging in "}
-                        {isLoading ? (
-                          <Loading
-                            isLoading={isLoading}
-                            color='white'
-                            size={14}
-                          />
-                        ) : null}
                       </Button>
                     </Grid>
                   </Grid>
@@ -150,7 +154,7 @@ const Login = () => {
             </Paper>
           </div>
 
-          <div className='welcome'>
+          <div className='image-container'>
             <Container className={classes.welcomeDisplay} maxWidth='xs'>
               <img
                 src={piggyBank}
