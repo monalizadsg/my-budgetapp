@@ -5,10 +5,10 @@ import TransactionList from "./TransactionList";
 import DateRangeDropdown from "../components/DateRangeDropdown";
 import Pagination from "@material-ui/lab/Pagination";
 import { getTransactions, getCategories } from "./transactionsService";
-import Loading from "../components/Loading";
 import "./Transactions.scss";
 import Toast from "../components/Toast";
 import FormDialog from "./../components/FormDialog";
+import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
 
 class Transactions extends Component {
   state = {
@@ -103,6 +103,10 @@ class Transactions extends Component {
     this.setState({ toastMessage });
   };
 
+  closeLoading = () => {
+    this.setState({ isLoading: false });
+  };
+
   openModal = () => {
     this.setState({ isOpen: true });
   };
@@ -172,7 +176,9 @@ class Transactions extends Component {
     const { isOpen, message } = this.state.toastMessage;
 
     if (isLoading) {
-      return <Loading isLoading={isLoading} size={40} />;
+      return (
+        <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
+      );
     }
 
     return (
