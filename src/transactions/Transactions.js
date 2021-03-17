@@ -4,11 +4,21 @@ import TransactionForm from "./TransactionForm";
 import TransactionList from "./TransactionList";
 import DateRangeDropdown from "../components/DateRangeDropdown";
 import Pagination from "@material-ui/lab/Pagination";
-import { getTransactions, getCategories } from "./transactionsService";
+import {
+  getAllTransactions,
+  getTransactions,
+  getCategories,
+} from "./transactionsService";
 import "./Transactions.scss";
 import Toast from "../components/Toast";
 import FormDialog from "./../components/FormDialog";
 import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
+
+const initialDateRange = {
+  id: 1,
+  startDate: format(startOfWeek(new Date()), "yyyy-MM-dd"),
+  endDate: format(endOfWeek(new Date()), "yyyy-MM-dd"),
+};
 
 class Transactions extends Component {
   state = {
@@ -18,11 +28,7 @@ class Transactions extends Component {
     totalPages: 0,
     currentPage: 1,
     pageSize: 10,
-    selectedDateRange: {
-      id: 1,
-      startDate: format(startOfWeek(new Date()), "yyyy-MM-dd"),
-      endDate: format(endOfWeek(new Date()), "yyyy-MM-dd"),
-    },
+    selectedDateRange: initialDateRange,
     selectedTransaction: null,
     isLoading: true,
     toastMessage: {
@@ -34,31 +40,36 @@ class Transactions extends Component {
   };
 
   async componentDidMount() {
-    const { startDate, endDate } = this.state.selectedDateRange;
-    const data = await getTransactions(startDate, endDate);
-    // console.log(data);
     const categories = await getCategories();
     this.setState({
-      data: data.transactions,
-      totalPages: data.totalPages,
       categories,
-      isLoading: false,
-      totalIncome: data.totalIncome,
-      totalExpense: data.totalExpense,
     });
+    this.fetchData();
   }
 
-  updateData = async () => {
+  updateData = () => {
+    this.fetchData();
+  };
+
+  fetchData = async () => {
     const { pageSize, currentPage } = this.state;
-    const { startDate, endDate } = this.state.selectedDateRange;
     const page = currentPage - 1;
-    const data = await getTransactions(startDate, endDate, page, pageSize);
-    const { transactions, totalPages } = data;
+    const { startDate, endDate } = this.state.selectedDateRange;
+    const data = await getAllTransactions(startDate, endDate);
+    const paginatedData = await getTransactions(
+      startDate,
+      endDate,
+      page,
+      pageSize
+    );
+    const { totalIncome, totalExpense } = data;
+    const { transactions, totalPages } = paginatedData;
     this.setState({
       data: transactions,
-      totalPages,
-      totalIncome: data.totalIncome,
-      totalExpense: data.totalExpense,
+      totalPages: totalPages,
+      isLoading: false,
+      totalIncome: totalIncome,
+      totalExpense: totalExpense,
     });
   };
 
@@ -127,6 +138,7 @@ class Transactions extends Component {
     this.setState(
       {
         currentPage: value,
+        isLoading: true,
       },
       () => {
         this.updateData();
@@ -135,13 +147,16 @@ class Transactions extends Component {
   };
 
   filterData = async (range) => {
-    const data = await getTransactions(range.startDate, range.endDate);
+    this.setState({ isLoading: true });
+    const data = await getAllTransactions(range.startDate, range.endDate);
+    const { transactions, totalPages, totalIncome, totalExpense } = data;
     this.setState({
-      data: data.transactions,
-      totalPages: data.totalPages,
+      data: transactions,
+      totalPages,
       selectedDateRange: range,
-      totalIncome: data.totalIncome,
-      totalExpense: data.totalExpense,
+      totalIncome,
+      totalExpense,
+      isLoading: false,
     });
   };
 
@@ -175,14 +190,11 @@ class Transactions extends Component {
 
     const { isOpen, message } = this.state.toastMessage;
 
-    if (isLoading) {
-      return (
-        <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
-      );
-    }
-
     return (
       <div className='transaction-container'>
+        {isLoading && (
+          <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
+        )}
         <div className='header'>
           <h2>Transactions</h2>
           <div>
@@ -196,29 +208,33 @@ class Transactions extends Component {
             </button>
           </div>
         </div>
-        <div className='date'>{this.renderDate()}</div>
-        <div>
-          <TransactionList
-            data={data}
-            onClickTransaction={this.onClickTransaction}
-            onClickEdit={this.onClickEdit}
-            totalIncome={totalIncome}
-            totalExpense={totalExpense}
-            updateData={this.updateData}
-            showToast={this.showToast}
-          />
-        </div>
-        <div className='pagination'>
-          {data.length > 0 && totalPages > 1 && (
-            <Pagination
-              count={totalPages}
-              page={currentPage}
-              onChange={this.handlePageChange}
-              variant='outlined'
-              shape='rounded'
-            />
-          )}
-        </div>
+        {!isLoading && (
+          <>
+            <div className='date'>{this.renderDate()}</div>
+            <div>
+              <TransactionList
+                data={data}
+                onClickTransaction={this.onClickTransaction}
+                onClickEdit={this.onClickEdit}
+                totalIncome={totalIncome}
+                totalExpense={totalExpense}
+                updateData={this.updateData}
+                showToast={this.showToast}
+              />
+            </div>
+            <div className='pagination'>
+              {data.length > 0 && totalPages > 1 && (
+                <Pagination
+                  count={totalPages}
+                  page={currentPage}
+                  onChange={this.handlePageChange}
+                  variant='outlined'
+                  shape='rounded'
+                />
+              )}
+            </div>
+          </>
+        )}
         <Toast message={message} open={isOpen} onClose={this.closeToast} />
 
         <FormDialog
