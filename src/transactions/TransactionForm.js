@@ -4,7 +4,7 @@ import DatePickerInput from "../components/DatePickerInput";
 import SelectInput from "../components/SelectInput";
 import FormActions from "../components/FormActions";
 import TextInput from "../components/TextInput";
-import { MenuItem } from "@material-ui/core";
+import { MenuItem, ListSubheader } from "@material-ui/core";
 import { format } from "date-fns";
 import "./TransactionForm.scss";
 
@@ -125,6 +125,18 @@ class TransactionForm extends Component {
       isLoading,
     } = this.state;
 
+    let incomeCategories = [];
+    let expenseCategories = [];
+    if (categories) {
+      categories.forEach((category) => {
+        if (category.type === "EXPENSE") {
+          expenseCategories.push(category);
+        } else if (category.type === "INCOME") {
+          incomeCategories.push(category);
+        }
+      });
+    }
+
     return (
       <>
         <div className='transaction-form-wrapper'>
@@ -150,10 +162,19 @@ class TransactionForm extends Component {
               value={category}
               error={errors.category}
               onChange={this.handleInputChange}
-              // menuData={categories}
             >
+              <ListSubheader>Expense</ListSubheader>
               {categories &&
-                categories.map((menu, index) => {
+                expenseCategories.map((menu, index) => {
+                  return (
+                    <MenuItem key={index} value={menu.id}>
+                      {menu.name}
+                    </MenuItem>
+                  );
+                })}
+              <ListSubheader>Income</ListSubheader>
+              {categories &&
+                incomeCategories.map((menu, index) => {
                   return (
                     <MenuItem key={index} value={menu.id}>
                       {menu.name}
