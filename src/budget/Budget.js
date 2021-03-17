@@ -79,12 +79,14 @@ class Budget extends Component {
   };
 
   filterBudget = async (period) => {
+    this.setState({ isLoading: true });
     const startDate = format(new Date(), "yyyy-MM-dd");
     const periodType = period.type.toLowerCase();
     const budgetBalances = await getBudgetBalances(periodType, startDate);
     this.setState({
       budgetBalances: budgetBalances.data,
       selectedPeriodType: period,
+      isLoading: false,
     });
   };
 
@@ -95,12 +97,6 @@ class Budget extends Component {
   render() {
     const { selectedBudget, isLoading, categories } = this.state;
     const { isOpen, message } = this.state.toastMessage;
-
-    if (isLoading) {
-      return (
-        <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
-      );
-    }
 
     return (
       <div className='budget-container'>
@@ -113,15 +109,20 @@ class Budget extends Component {
             </button>
           </div>
         </div>
-        <BudgetList
-          data={this.state.budgetBalances}
-          categories={categories}
-          onClickBudget={this.onClickBudget}
-          onClickEdit={this.onClickEdit}
-          isLoading={isLoading}
-          updateData={this.updateData}
-          showToast={this.showToast}
-        />
+        {isLoading && (
+          <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
+        )}
+        {!isLoading && (
+          <BudgetList
+            data={this.state.budgetBalances}
+            categories={categories}
+            onClickBudget={this.onClickBudget}
+            onClickEdit={this.onClickEdit}
+            isLoading={isLoading}
+            updateData={this.updateData}
+            showToast={this.showToast}
+          />
+        )}
 
         <FormDialog
           isOpen={this.state.isOpen}
