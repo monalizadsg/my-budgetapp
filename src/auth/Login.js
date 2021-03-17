@@ -7,7 +7,6 @@ import { login } from "./authService";
 import { useHistory } from "react-router-dom";
 import piggyBank from "../images/piggy_bank.png";
 import "./Login.scss";
-import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
 
 import TextInputWithIcon from "../components/TextInputWithIcon";
 
@@ -83,14 +82,9 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleCloseLoading = () => {
-    setIsLoading(false);
-  };
-
   return (
     <React.Fragment>
       <div className='login'>
-        <LoadingWithBackdrop open={isLoading} onClose={handleCloseLoading} />
         <div className='header'>
           <Typography variant='h6' className='logo'>
             HomeExpensify
