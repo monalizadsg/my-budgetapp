@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import "./Header.scss";
 
 const useStyles = makeStyles((theme) => ({
   navbarDisplayFlex: {
@@ -86,6 +85,7 @@ const Header = () => {
               fontSize='large'
               color='primary'
               onClick={handleClick}
+              style={{ cursor: "pointer" }}
             />
             <StyledMenu
               id='simple-menu'
