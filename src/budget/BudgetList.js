@@ -19,6 +19,7 @@ import "./BudgetList.scss";
 import ConfirmDialogContent from "../components/ConfirmDialogContent";
 import CloseIcon from "@material-ui/icons/Close";
 import Modal from "../components/Modal";
+import TransactionsTable from "./TransactionsTable";
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -134,6 +135,7 @@ const BudgetList = (props) => {
     );
   };
 
+  //use for progressbar calculation
   const getTotalExpense = (maxValue, leftValue) => {
     const MIN = 0;
     const MAX = maxValue;
@@ -246,41 +248,29 @@ const BudgetList = (props) => {
         >
           <div className='budget-transactions-modal-content'>
             {budgetTransactions && (
-              <>
-                <div className='amount-wrapper'>
-                  <div className='amount-limit'>
-                    Amount Limit: {formatAmount(selectedBudget?.amountLimit)}
-                  </div>
-                  <div className='total-expense'>
-                    Total Expense:{" "}
-                    {formatAmount(
-                      selectedBudget?.amountLimit - selectedBudget?.amountLeft
-                    )}
-                  </div>
-                </div>
-                <div className='date-range'>
-                  {`${props.data[0]?.startDate} to  ${props.data[0]?.endDate}`}
-                </div>
-              </>
+              <div className='table'>
+                {budgetTransactions.length > 0 ? (
+                  <>
+                    <div className='date-range'>
+                      {`${props.data[0]?.startDate} to  ${props.data[0]?.endDate}`}
+                    </div>
+                    <TransactionsTable
+                      rows={budgetTransactions}
+                      budget={selectedBudget}
+                    />
+                  </>
+                ) : (
+                  <div className='no-data'>No transactions yet.</div>
+                )}
+              </div>
             )}
-            <List className='list'>
-              {budgetTransactions.length > 0 ? (
-                budgetTransactions.map((item) => (
-                  <ListItem className='list-item' key={item.id}>
-                    <div className='date'>{item.date}</div>
-                    <div className='desc'>{item.description}</div>
-                    <div className='amount'>{formatAmount(item.amount)}</div>
-                  </ListItem>
-                ))
-              ) : (
-                <div className='no-data'>No transactions yet.</div>
-              )}
-            </List>
           </div>
         </Modal>
       </>
     );
   };
+
+  console.log(props.data);
 
   return (
     <>

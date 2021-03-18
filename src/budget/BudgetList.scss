@@ -16,12 +16,10 @@
   }
 
   .budget-list-card {
-    // border: green solid 1px;
     margin-top: 20px;
     width: 100%;
 
     .card-item {
-      // border: red 1px solid;
       border-radius: 6px;
 
       .list-item {
@@ -91,7 +89,6 @@
 
                 &.overspent {
                   color: #f44336;
-                  // border: 1px solid red;
                 }
               }
             }
@@ -124,34 +121,16 @@
 .budget-transactions-modal-content {
   .date-range {
     text-align: center;
-    padding-top: 20px;
+    padding-bottom: 10px;
     color: #808080;
   }
 
-  .amount-wrapper {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #f1f1f1;
-  }
-
-  .amount-limit {
-    font-weight: 600;
-  }
-
-  .total-expense {
-    color: red;
-    font-size: 1.1em;
+  .table {
+    padding-bottom: 20px;
   }
 
   .no-data {
     text-align: center;
     margin-top: 20px;
-  }
-
-  .list {
-    .list-item {
-      display: flex;
-      justify-content: space-between;
-    }
   }
 }
