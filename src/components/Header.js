@@ -79,7 +79,7 @@ const Header = () => {
           className={`nav-header ${classes.navbarDisplayFlex}`}
         >
           <Typography variant='h6' className={classes.logoText}>
-            BudgetApp
+            HomeExpensify
           </Typography>
           <List component='nav' aria-labelledby='main navigation'>
             <AccountCircleIcon

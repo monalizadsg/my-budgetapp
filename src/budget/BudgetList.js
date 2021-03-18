@@ -6,8 +6,6 @@ import {
   MenuItem,
   IconButton,
   Typography,
-  List,
-  ListItem,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { deleteBudget, getBudgetTransactions } from "./budgetService";
