@@ -1,12 +1,5 @@
 import api from "../commons/api";
 
-export async function getAllTransactions(startDate, endDate) {
-  const response = await api.get(
-    `/v1/transactions/paged?startDate=${startDate}&endDate=${endDate}`
-  );
-  return response.data;
-}
-
 export async function getTransactions(
   startDate,
   endDate,
@@ -17,6 +10,13 @@ export async function getTransactions(
     `/v1/transactions/paged?page=${page}&pageSize=${pageSize}&startDate=${startDate}&endDate=${endDate}`
   );
   return response.data;
+}
+
+export async function getTransactionsTotal(startDate, endDate, categoryType) {
+  const response = await api.get(
+    `/v1/transactions/total?startDate=${startDate}&endDate=${endDate}&categoryType=${categoryType}`
+  );
+  return response.data.totalAmount;
 }
 
 export async function getCategories() {
@@ -37,10 +37,10 @@ export async function deleteTransaction(id) {
 }
 
 export default {
-  getAllTransactions,
   getTransactions,
   getCategories,
   createTransaction,
   updateTransaction,
   deleteTransaction,
+  getTransactionsTotal,
 };

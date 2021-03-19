@@ -5,9 +5,9 @@ import TransactionList from "./TransactionList";
 import DateRangeDropdown from "../components/DateRangeDropdown";
 import Pagination from "@material-ui/lab/Pagination";
 import {
-  getAllTransactions,
   getTransactions,
   getCategories,
+  getTransactionsTotal,
 } from "./transactionsService";
 import "./Transactions.scss";
 import Toast from "../components/Toast";
@@ -51,25 +51,36 @@ class Transactions extends Component {
     this.fetchData();
   };
 
+  fetchTotal = async (startDate, endDate) => {
+    const totalIncome = await getTransactionsTotal(
+      startDate,
+      endDate,
+      "INCOME"
+    );
+    const totalExpense = await getTransactionsTotal(
+      startDate,
+      endDate,
+      "EXPENSE"
+    );
+
+    const total = { totalIncome, totalExpense };
+
+    return total;
+  };
+
   fetchData = async () => {
     const { pageSize, currentPage } = this.state;
     const page = currentPage - 1;
     const { startDate, endDate } = this.state.selectedDateRange;
-    const data = await getAllTransactions(startDate, endDate);
-    const paginatedData = await getTransactions(
-      startDate,
-      endDate,
-      page,
-      pageSize
-    );
-    const { totalIncome, totalExpense } = data;
-    const { transactions, totalPages } = paginatedData;
+    const data = await getTransactions(startDate, endDate, page, pageSize);
+    const total = await this.fetchTotal(startDate, endDate);
+    const { transactions, totalPages } = data;
     this.setState({
       data: transactions,
       totalPages: totalPages,
       isLoading: false,
-      totalIncome: totalIncome,
-      totalExpense: totalExpense,
+      totalIncome: total.totalIncome,
+      totalExpense: total.totalExpense,
     });
   };
 
@@ -148,14 +159,15 @@ class Transactions extends Component {
 
   filterData = async (range) => {
     this.setState({ isLoading: true });
-    const data = await getAllTransactions(range.startDate, range.endDate);
-    const { transactions, totalPages, totalIncome, totalExpense } = data;
+    const data = await getTransactions(range.startDate, range.endDate);
+    const total = await this.fetchTotal(range.startDate, range.endDate);
+    const { transactions, totalPages } = data;
     this.setState({
       data: transactions,
       totalPages,
       selectedDateRange: range,
-      totalIncome,
-      totalExpense,
+      totalIncome: total.totalIncome,
+      totalExpense: total.totalExpense,
       isLoading: false,
     });
   };
