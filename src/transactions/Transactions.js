@@ -41,8 +41,13 @@ class Transactions extends Component {
 
   async componentDidMount() {
     const categories = await getCategories();
+    const { startDate, endDate } = this.state.selectedDateRange;
+    const total = await this.fetchTotal(startDate, endDate);
+    const { totalIncome, totalExpense } = total;
     this.setState({
       categories,
+      totalIncome,
+      totalExpense,
     });
     this.fetchData();
   }
@@ -73,14 +78,11 @@ class Transactions extends Component {
     const page = currentPage - 1;
     const { startDate, endDate } = this.state.selectedDateRange;
     const data = await getTransactions(startDate, endDate, page, pageSize);
-    const total = await this.fetchTotal(startDate, endDate);
     const { transactions, totalPages } = data;
     this.setState({
       data: transactions,
       totalPages: totalPages,
       isLoading: false,
-      totalIncome: total.totalIncome,
-      totalExpense: total.totalExpense,
     });
   };
 
