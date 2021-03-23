@@ -48,7 +48,7 @@ const Login = () => {
     try {
       await login(email, password);
       setIsLoading(false);
-      history.push("/transactions");
+      history.push("/");
     } catch (ex) {
       setError("Incorrect email or password");
       setIsLoading(false);

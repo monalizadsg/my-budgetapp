@@ -8,7 +8,7 @@ import "./SideNav.scss";
 const navLinks = [
   {
     title: "Transaction",
-    path: "/transactions",
+    path: "/",
     icon: <FontAwesomeIcon className='icon' icon={faClipboard} />,
   },
   {
