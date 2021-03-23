@@ -41,19 +41,21 @@ class Transactions extends Component {
 
   async componentDidMount() {
     const categories = await getCategories();
-    const { startDate, endDate } = this.state.selectedDateRange;
-    const total = await this.fetchTotal(startDate, endDate);
-    const { totalIncome, totalExpense } = total;
     this.setState({
       categories,
-      totalIncome,
-      totalExpense,
     });
     this.fetchData();
   }
 
-  updateData = () => {
-    this.fetchData();
+  fetchData = async () => {
+    const { startDate, endDate } = this.state.selectedDateRange;
+    const total = await this.fetchTotal(startDate, endDate);
+    const { totalIncome, totalExpense } = total;
+    this.setState({
+      totalIncome,
+      totalExpense,
+    });
+    this.updateData();
   };
 
   fetchTotal = async (startDate, endDate) => {
@@ -73,7 +75,7 @@ class Transactions extends Component {
     return total;
   };
 
-  fetchData = async () => {
+  updateData = async () => {
     const { pageSize, currentPage } = this.state;
     const page = currentPage - 1;
     const { startDate, endDate } = this.state.selectedDateRange;
@@ -97,7 +99,7 @@ class Transactions extends Component {
     // this.setState({
     //   data: newData,
     // });
-    this.updateData();
+    this.fetchData();
     this.closeModal();
     this.showToast("Transaction is successfully updated!");
   };
@@ -108,7 +110,7 @@ class Transactions extends Component {
     // this.setState({
     //   data: newData,
     // });
-    this.updateData();
+    this.fetchData();
     this.closeModal();
     this.showToast("Transaction is successfully added!");
   };
@@ -232,7 +234,7 @@ class Transactions extends Component {
                 onClickEdit={this.onClickEdit}
                 totalIncome={totalIncome}
                 totalExpense={totalExpense}
-                updateData={this.updateData}
+                updateData={this.fetchData}
                 showToast={this.showToast}
               />
             </div>
@@ -259,7 +261,6 @@ class Transactions extends Component {
           <TransactionForm
             categories={categories}
             closeModal={this.closeModal}
-            updateData={this.updateData}
             selectedTransaction={selectedTransaction}
             onSaveSuccess={
               selectedTransaction
