@@ -7,16 +7,19 @@ Our motivation to build this project is to create something that we can use in a
 
 ### Tech stack: 
 - Create-React-App for bootstrapping the project
-- Material UI as component framework
+- Material UI as component layout
 - React-router-dom for routing
 - Axios for HTTP requests
 
 
 ### Features
 - User authentication
-- Transactions - Add transactions with description, amount, date, and category. Track expenses/incomes on weekly, monthly and yearly basis.
+- Transactions - Add transactions with description, amount, date, and category. 
+- Filter transactions - Track expenses/incomes on weekly, monthly and on a custom basis. 
+- Pagination - Display 10 transactions only per page.
 - Categories
 - Budgets - Set a budget for each categories by period (Weekly, Monthly, Yearly).
+- Filter budgets - Track budget on weekly, monthly and yearly basis. 
 
 
 ### Future Enhancement
