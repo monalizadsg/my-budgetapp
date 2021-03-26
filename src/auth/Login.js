@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { login } from "./authService";
 import { useHistory } from "react-router-dom";
 import piggyBank from "../images/piggy_bank.png";
-import "./Login.scss";
-
 import TextInputWithIcon from "../components/TextInputWithIcon";
+import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
+import "./Login.scss";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,6 +42,7 @@ const Login = () => {
     const isValid = validateForm();
     if (!isValid) {
       setError("Incorrect email or password");
+      setIsLoading(false);
       return;
     }
 
@@ -82,9 +83,16 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const closeLoading = () => {
+    setIsLoading(false);
+  };
+
   return (
     <React.Fragment>
       <div className='login'>
+        {isLoading && (
+          <LoadingWithBackdrop open={isLoading} onClose={closeLoading} />
+        )}
         <div className='header'>
           <Typography variant='h6' className='logo'>
             HomeExpensify
@@ -123,6 +131,8 @@ const Login = () => {
                         </Grid>
                         <Grid item xs={12}>
                           <TextInputWithIcon
+                            label='Password'
+                            name='password'
                             showPassword={showPassword}
                             value={password}
                             onChange={handlePasswordChange}
@@ -146,6 +156,15 @@ const Login = () => {
                 </form>
               </Container>
             </Paper>
+            <div className='note'>
+              <p>
+                <strong>Note:</strong> Please login using the details below.
+              </p>
+              <div className='details'>
+                <p>Username: demo.homeexpensify@monalizadasig.com</p>
+                <p>Password: userdemo</p>
+              </div>
+            </div>
           </div>
 
           <div className='image-container'>
