@@ -18,6 +18,7 @@ import ConfirmDialogContent from "../components/ConfirmDialogContent";
 import CloseIcon from "@material-ui/icons/Close";
 import Modal from "../components/Modal";
 import TransactionsTable from "./TransactionsTable";
+import Loading from "./../components/Loading";
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -92,10 +93,12 @@ const BudgetList = (props) => {
   };
 
   const displayTransactions = async () => {
+    setIsLoading(true);
     const startDate = format(new Date(), "yyyy-MM-dd");
     const budgetId = selectedBudget?.id;
     const budgetTransactions = await getBudgetTransactions(budgetId, startDate);
     setBudgetTransactions(budgetTransactions.data);
+    setIsLoading(false);
   };
 
   const handleDisplayTransactions = async () => {
@@ -245,7 +248,8 @@ const BudgetList = (props) => {
           }
         >
           <div className='budget-transactions-modal-content'>
-            {budgetTransactions && (
+            {isLoading && <Loading isLoading={isLoading} />}
+            {!isLoading && budgetTransactions && (
               <div className='table'>
                 {budgetTransactions.length > 0 ? (
                   <>

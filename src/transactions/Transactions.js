@@ -12,7 +12,7 @@ import {
 import "./Transactions.scss";
 import Toast from "../components/Toast";
 import FormDialog from "./../components/FormDialog";
-import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
+import Loading from "../components/Loading";
 
 const initialDateRange = {
   id: 1,
@@ -129,10 +129,6 @@ class Transactions extends Component {
     this.setState({ toastMessage });
   };
 
-  closeLoading = () => {
-    this.setState({ isLoading: false });
-  };
-
   openModal = () => {
     this.setState({ isOpen: true });
   };
@@ -208,9 +204,6 @@ class Transactions extends Component {
 
     return (
       <div className='transaction-container'>
-        {isLoading && (
-          <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
-        )}
         <div className='header'>
           <h2>Transactions</h2>
           <div>
@@ -224,6 +217,7 @@ class Transactions extends Component {
             </button>
           </div>
         </div>
+        {isLoading && <Loading isLoading={isLoading} />}
         {!isLoading && (
           <>
             <div className='date'>{this.renderDate()}</div>

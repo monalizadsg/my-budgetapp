@@ -10,7 +10,7 @@ const Loading = (props) => {
         height: "100%",
         display: "flex",
         justifyContent: "center",
-        alignContent: "center",
+        alignItems: "center",
       }}
     >
       {props.isLoading && (

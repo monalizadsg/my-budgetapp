@@ -8,7 +8,7 @@ import PeriodTypeDropdown from "../components/PeriodTypeDropdown";
 import { format } from "date-fns";
 import Toast from "../components/Toast";
 import FormDialog from "../components/FormDialog";
-import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
+import Loading from "../components/Loading";
 
 class Budget extends Component {
   state = {
@@ -90,10 +90,6 @@ class Budget extends Component {
     });
   };
 
-  closeLoading = () => {
-    this.setState({ isLoading: false });
-  };
-
   render() {
     const { selectedBudget, isLoading, categories } = this.state;
     const { isOpen, message } = this.state.toastMessage;
@@ -109,9 +105,7 @@ class Budget extends Component {
             </button>
           </div>
         </div>
-        {isLoading && (
-          <LoadingWithBackdrop open={isLoading} onClose={this.closeLoading} />
-        )}
+        {isLoading && <Loading isLoading={isLoading} />}
         {!isLoading && (
           <BudgetList
             data={this.state.budgetBalances}
