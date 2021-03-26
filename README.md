@@ -40,5 +40,6 @@ Our motivation to build this project is to create something that we can use in a
 - Open the project in VScode
 - Run `npm install` to get the required packages
 - Run `npm start` to start the client at http://localhost:8080
-- Use userdemo@gmail.com with the password to sign in
+- Use `username` **demo.homeexpensify@monalizadasig.com**
+with the `password` **userdemo** to sign in
 
