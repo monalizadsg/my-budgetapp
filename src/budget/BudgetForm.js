@@ -191,6 +191,7 @@ class BudgetForm extends Component {
             value={periodType}
             error={errors.periodType}
             onChange={this.handleInputChange}
+            disabled={isEditing}
           >
             {Object.entries(periodRange).map(([key, value], index) => {
               // console.log(key, value);

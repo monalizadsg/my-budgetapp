@@ -6,7 +6,15 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 
-const SelectInput = ({ name, label, value, error, onChange, children }) => {
+const SelectInput = ({
+  name,
+  label,
+  value,
+  error,
+  onChange,
+  children,
+  disabled,
+}) => {
   return (
     <FormControl variant='outlined' error={!!error}>
       <InputLabel id={name}>{label}</InputLabel>
@@ -17,6 +25,7 @@ const SelectInput = ({ name, label, value, error, onChange, children }) => {
         id={name}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       >
         {children}
       </Select>
