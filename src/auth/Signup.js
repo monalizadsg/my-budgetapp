@@ -163,6 +163,7 @@ const Signup = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <TextInputWithIcon
+                        label='Password'
                         name='password'
                         showPassword={showPassword}
                         value={user.password}
@@ -172,6 +173,7 @@ const Signup = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <TextInputWithIcon
+                        label='Confirm Password'
                         name='confirmPassword'
                         showPassword={showConfirmPassword}
                         value={user.confirmPassword}
@@ -187,6 +189,7 @@ const Signup = () => {
                     fullWidth
                     type='submit'
                     variant='contained'
+                    disabled='true'
                   >
                     Sign Up
                   </Button>
