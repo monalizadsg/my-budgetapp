@@ -167,6 +167,7 @@ class BudgetForm extends Component {
             value={category}
             onChange={this.handleInputChange}
             error={errors.category}
+            disabled={isEditing}
           >
             {categories &&
               categories.map((menu, index) => {
