@@ -8,7 +8,7 @@ import {
   // DialogTitle,
 } from "@material-ui/core";
 // import { format } from "date-fns";
-import { createBudget, updateBudget } from "./budgetService";
+import { createBudget, updateBudget, getBudgets } from "./budgetService";
 // import DatePickerInput from "./../common/DatePickerInput";
 import FormActions from "../components/FormActions";
 import SelectInput from "../components/SelectInput";
@@ -35,9 +35,12 @@ class BudgetForm extends Component {
     // },
     isEditing: false,
     isLoading: false,
+    data: [],
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const budgets = await getBudgets();
+    this.setState({ data: budgets.data });
     this.getSelectedBudget();
   }
 
@@ -55,19 +58,20 @@ class BudgetForm extends Component {
   };
 
   validateForm = () => {
-    const { amountLimit, category, periodType } = this.state;
-    const { data } = this.props;
+    const { amountLimit, category, periodType, isEditing, data } = this.state;
 
     let errors = {};
     let isValid = true;
 
-    //check if budget is already created by period
-    data.forEach((item) => {
-      if (item.category.id === category && item.periodType === periodType) {
-        errors.periodType = "Budget is already existed.";
-        errors.category = "Budget is already existed.";
-      }
-    });
+    //check if budget is already created by period when adding new budget
+    if (!isEditing) {
+      data.forEach((item) => {
+        if (item.category.id === category && item.periodType === periodType) {
+          errors.periodType = "Budget is already existed.";
+          errors.category = "Budget is already existed.";
+        }
+      });
+    }
 
     if (amountLimit === "") {
       errors.amountLimit = "This field is required";
@@ -167,7 +171,6 @@ class BudgetForm extends Component {
             value={category}
             onChange={this.handleInputChange}
             error={errors.category}
-            disabled={isEditing}
           >
             {categories &&
               categories.map((menu, index) => {
