@@ -272,8 +272,6 @@ const BudgetList = (props) => {
     );
   };
 
-  console.log(props.data);
-
   return (
     <>
       <div className='budget-list'>

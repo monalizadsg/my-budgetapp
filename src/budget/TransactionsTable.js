@@ -19,7 +19,6 @@ const fields = ["Date", "Description", "Amount"];
 const TransactionsTable = (props) => {
   const classes = useStyles();
 
-  console.log(props.rows);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label='spanning table'>
