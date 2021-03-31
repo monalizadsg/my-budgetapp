@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import piggyBank from "../images/piggy_bank.png";
 import TextInputWithIcon from "../components/TextInputWithIcon";
 import LoadingWithBackdrop from "../components/LoadingWithBackdrop";
+import Alert from "@material-ui/lab/Alert";
 import "./Login.scss";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  alert: {
+    marginBottom: 10,
+    color: "#f44336",
   },
 }));
 
@@ -119,6 +124,11 @@ const Login = () => {
                     <Grid item xs={12}>
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          {error && (
+                            <Alert className={classes.alert} severity='error'>
+                              {error}
+                            </Alert>
+                          )}
                           <TextInput
                             fullWidth
                             type='email'
@@ -126,7 +136,7 @@ const Login = () => {
                             label='Email'
                             value={email}
                             onChange={handleEmailChange}
-                            error={error}
+                            // error={error}
                           />
                         </Grid>
                         <Grid item xs={12}>
@@ -141,6 +151,7 @@ const Login = () => {
                         </Grid>
                       </Grid>
                     </Grid>
+
                     <Grid item xs={12}>
                       <Button
                         color='primary'
