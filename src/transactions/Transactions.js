@@ -176,9 +176,9 @@ class Transactions extends Component {
     const { selectedDateRange } = this.state;
     const startDate = format(
       new Date(selectedDateRange.startDate),
-      "dd MMMM yyyy"
+      "dd MMM yyyy"
     );
-    const endDate = format(new Date(selectedDateRange.endDate), "dd MMMM yyyy");
+    const endDate = format(new Date(selectedDateRange.endDate), "dd MMM yyyy");
 
     return (
       <div>

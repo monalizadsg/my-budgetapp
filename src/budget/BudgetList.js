@@ -124,8 +124,8 @@ const BudgetList = (props) => {
 
   const renderHeader = () => {
     const period = props.data[0]?.periodType;
-    const startDate = props.data[0]?.startDate;
-    const endDate = props.data[0]?.endDate;
+    const startDate = format(new Date(props.data[0]?.startDate), "dd MMM yyyy");
+    const endDate = format(new Date(props.data[0]?.endDate), "dd MMM yyyy");
     return (
       <div className='budget-list-header'>
         <div>{period} Budgets</div>
