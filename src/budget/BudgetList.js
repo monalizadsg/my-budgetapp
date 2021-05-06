@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   LinearProgress,
@@ -11,7 +11,15 @@ import { withStyles } from "@material-ui/core/styles";
 import { deleteBudget, getBudgetTransactions } from "./budgetService";
 import Empty from "./../components/Empty";
 import { formatAmount } from "../commons/utils";
-import { format } from "date-fns";
+import {
+  format,
+  subWeeks,
+  subMonths,
+  subYears,
+  addWeeks,
+  addMonths,
+  addYears,
+} from "date-fns";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import "./BudgetList.scss";
 import ConfirmDialogContent from "../components/ConfirmDialogContent";
@@ -19,6 +27,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Modal from "../components/Modal";
 import TransactionsTable from "./TransactionsTable";
 import Loading from "./../components/Loading";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -61,6 +71,15 @@ const BudgetList = (props) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false);
   const [budgetTransactions, setBudgetTransactions] = useState([]);
+  const [dateRange, setDateRange] = useState({
+    period: props.data[0]?.periodType,
+    startDate: props.data[0]?.startDate,
+    endDate: props.data[0]?.endDate,
+  });
+
+  useEffect(() => {
+    props.onClickDateRangeArrow(dateRange.startDate);
+  }, [props.onClickDateRangeArrow, dateRange]);
 
   const handleClick = (event, item) => {
     setMenuAction(event.currentTarget);
@@ -122,15 +141,68 @@ const BudgetList = (props) => {
     setIsDeleteModalOpen(true);
   };
 
+  const changeDateRange = (prevDate) => {
+    const period = dateRange.period;
+    const startDate = new Date(dateRange.startDate);
+    const endDate = new Date(dateRange.endDate);
+    let newDateRange = {};
+    if (period === "WEEKLY") {
+      newDateRange.startDate =
+        prevDate === "previous-date"
+          ? subWeeks(startDate, 1)
+          : addWeeks(startDate, 1);
+      newDateRange.endDate =
+        prevDate === "previous-date"
+          ? subWeeks(endDate, 1)
+          : addWeeks(endDate, 1);
+    }
+    if (period === "MONTHLY") {
+      newDateRange.startDate =
+        prevDate === "previous-date"
+          ? subMonths(startDate, 1)
+          : addMonths(startDate, 1);
+      newDateRange.endDate =
+        prevDate === "previous-date"
+          ? subMonths(endDate, 1)
+          : addMonths(endDate, 1);
+    }
+    if (period === "YEARLY") {
+      newDateRange.startDate =
+        prevDate === "previous-date"
+          ? subYears(startDate, 1)
+          : addYears(startDate, 1);
+      newDateRange.endDate =
+        prevDate === "previous-date"
+          ? subYears(endDate, 1)
+          : addYears(endDate, 1);
+    }
+
+    setDateRange({
+      ...dateRange,
+      ...newDateRange,
+    });
+  };
+
   const renderHeader = () => {
     const period = props.data[0]?.periodType;
-    const startDate = format(new Date(props.data[0]?.startDate), "dd MMM yyyy");
-    const endDate = format(new Date(props.data[0]?.endDate), "dd MMM yyyy");
+    const startDate = format(new Date(dateRange.startDate), "dd MMM yyyy");
+    const endDate = format(new Date(dateRange.endDate), "dd MMM yyyy");
+    const notGreaterThanToday = new Date() > new Date(endDate);
     return (
       <div className='budget-list-header'>
         <div>{period} Budgets</div>
         <div className='item-date'>
-          {startDate} to {endDate}
+          <ArrowBackIosIcon
+            className='arrow-icon'
+            onClick={() => changeDateRange("previous-date")}
+          />
+          {startDate} - {endDate}
+          {notGreaterThanToday && (
+            <ArrowForwardIosIcon
+              className='arrow-icon'
+              onClick={changeDateRange}
+            />
+          )}
         </div>
       </div>
     );

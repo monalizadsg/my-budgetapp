@@ -81,11 +81,22 @@ class Budget extends Component {
   filterBudget = async (period) => {
     this.setState({ isLoading: true });
     const startDate = format(new Date(), "yyyy-MM-dd");
-    const periodType = period.type.toLowerCase();
-    const budgetBalances = await getBudgetBalances(periodType, startDate);
+    const budgetBalances = await getBudgetBalances(period.type, startDate);
     this.setState({
       budgetBalances: budgetBalances.data,
       selectedPeriodType: period,
+      isLoading: false,
+    });
+  };
+
+  showDataByDateRange = async (startDate) => {
+    const newStartDate = format(new Date(startDate), "yyyy-MM-dd");
+    const budgetBalances = await getBudgetBalances(
+      this.state.selectedPeriodType.type,
+      newStartDate
+    );
+    this.setState({
+      budgetBalances: budgetBalances.data,
       isLoading: false,
     });
   };
@@ -115,6 +126,7 @@ class Budget extends Component {
             isLoading={isLoading}
             updateData={this.updateData}
             showToast={this.showToast}
+            onClickDateRangeArrow={this.showDataByDateRange}
           />
         )}
 
