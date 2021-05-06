@@ -7,6 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { formatAmount } from "../commons/utils";
 
 const useStyles = makeStyles({
   table: {
@@ -42,7 +43,7 @@ const TransactionsTable = (props) => {
             <TableRow key={row.id}>
               <TableCell>{row.date}</TableCell>
               <TableCell align='left'>{row.description}</TableCell>
-              <TableCell align='left'>{row.amount}</TableCell>
+              <TableCell align='left'>{formatAmount(row.amount)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

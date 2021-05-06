@@ -114,7 +114,7 @@ const BudgetList = (props) => {
 
   const displayTransactions = async () => {
     setIsLoading(true);
-    const startDate = format(new Date(), "yyyy-MM-dd");
+    const startDate = format(new Date(dateRange.startDate), "yyyy-MM-dd");
     const budgetId = selectedBudget?.id;
     const budgetTransactions = await getBudgetTransactions(budgetId, startDate);
     setBudgetTransactions(budgetTransactions.data);
