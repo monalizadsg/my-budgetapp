@@ -79,6 +79,7 @@ const BudgetList = (props) => {
 
   useEffect(() => {
     props.onClickDateRangeArrow(dateRange.startDate);
+    // eslint-disable-next-line
   }, [props.onClickDateRangeArrow, dateRange]);
 
   const handleClick = (event, item) => {
