@@ -27,6 +27,15 @@
     margin-top: 20px;
     width: 100%;
 
+    .total-budget {
+      text-align: right;
+      padding: 10px 0;
+      text-transform: uppercase;
+      color: #808080;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
     .card-item {
       border-radius: 6px;
 

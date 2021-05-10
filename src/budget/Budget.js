@@ -120,10 +120,9 @@ class Budget extends Component {
         {!isLoading && (
           <BudgetList
             data={this.state.budgetBalances}
-            categories={categories}
             onClickBudget={this.onClickBudget}
             onClickEdit={this.onClickEdit}
-            isLoading={isLoading}
+            loading={isLoading}
             updateData={this.updateData}
             showToast={this.showToast}
             onClickDateRangeArrow={this.showDataByDateRange}

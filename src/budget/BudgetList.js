@@ -64,52 +64,59 @@ const StyledMenu = withStyles({
   />
 ));
 
-const BudgetList = (props) => {
+const BudgetList = ({
+  data,
+  onClickBudget,
+  onClickEdit,
+  loading,
+  updateData,
+  showToast,
+  onClickDateRangeArrow,
+}) => {
   const [menuAction, setMenuAction] = useState(null);
   const [selectedBudget, setSelectedBudget] = useState(null);
-  const [isLoading, setIsLoading] = useState(props.isLoading);
+  const [isLoading, setIsLoading] = useState(loading);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false);
   const [budgetTransactions, setBudgetTransactions] = useState([]);
   const [dateRange, setDateRange] = useState({
-    period: props.data[0]?.periodType,
-    startDate: props.data[0]?.startDate,
-    endDate: props.data[0]?.endDate,
+    period: data[0]?.periodType,
+    startDate: data[0]?.startDate,
+    endDate: data[0]?.endDate,
   });
 
   useEffect(() => {
-    props.onClickDateRangeArrow(dateRange.startDate);
-    // eslint-disable-next-line
-  }, [props.onClickDateRangeArrow, dateRange]);
+    onClickDateRangeArrow(dateRange.startDate);
+  }, [onClickDateRangeArrow, dateRange]);
 
   const handleClick = (event, item) => {
     setMenuAction(event.currentTarget);
     setSelectedBudget(item);
-    props.onClickBudget(item);
+    onClickBudget(item);
   };
 
   const handleClose = () => {
     setMenuAction(null);
     setSelectedBudget(null);
-    props.onClickBudget(null);
+    onClickBudget(null);
   };
 
   const closeDeleteModal = () => {
     setSelectedBudget(null);
     setIsDeleteModalOpen(false);
     setIsLoading(false);
-    props.onClickBudget(null);
+    onClickBudget(null);
   };
 
   const closeTransactionsModal = () => {
     setSelectedBudget(null);
     setIsTransactionsModalOpen(false);
-    props.onClickBudget(null);
+    onClickBudget(null);
   };
 
   const handleEdit = () => {
     setMenuAction(null);
-    props.onClickEdit();
+    onClickEdit();
   };
 
   const displayTransactions = async () => {
@@ -132,8 +139,8 @@ const BudgetList = (props) => {
     const budgetId = selectedBudget?.id;
     await deleteBudget(budgetId);
 
-    props.updateData();
-    props.showToast("Budget is successfully deleted!");
+    updateData();
+    showToast("Budget is successfully deleted!");
     closeDeleteModal();
   };
 
@@ -185,7 +192,7 @@ const BudgetList = (props) => {
   };
 
   const renderHeader = () => {
-    const period = props.data[0]?.periodType;
+    const period = data[0]?.periodType;
     const startDate = format(new Date(dateRange.startDate), "dd MMM yyyy");
     const endDate = format(new Date(dateRange.endDate), "dd MMM yyyy");
     const notGreaterThanToday = new Date() > new Date(endDate);
@@ -209,6 +216,20 @@ const BudgetList = (props) => {
     );
   };
 
+  const renderTotalBudget = () => {
+    let totalAmountLimit = 0;
+
+    for (const item of data) {
+      totalAmountLimit += item.amountLimit;
+    }
+
+    return (
+      <div className='total-budget'>
+        Total: {formatAmount(totalAmountLimit)}
+      </div>
+    );
+  };
+
   //use for progressbar calculation
   const getTotalExpense = (maxValue, leftValue) => {
     const MIN = 0;
@@ -224,7 +245,8 @@ const BudgetList = (props) => {
     return (
       <>
         <div className='budget-list-card'>
-          {props.data.map((item) => {
+          {renderTotalBudget()}
+          {data.map((item) => {
             const totalExpense = getTotalExpense(
               item.amountLimit,
               item.amountLeft
@@ -327,7 +349,7 @@ const BudgetList = (props) => {
                 {budgetTransactions.length > 0 ? (
                   <>
                     <div className='date-range'>
-                      {`${props.data[0]?.startDate} to  ${props.data[0]?.endDate}`}
+                      {`${data[0]?.startDate} to  ${data[0]?.endDate}`}
                     </div>
                     <TransactionsTable
                       rows={budgetTransactions}
@@ -348,7 +370,7 @@ const BudgetList = (props) => {
   return (
     <>
       <div className='budget-list'>
-        {props.data.length > 0 ? (
+        {data.length > 0 ? (
           <>
             {renderHeader()}
             {renderBudgetList()}
