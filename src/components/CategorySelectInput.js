@@ -2,7 +2,13 @@ import React from "react";
 import { MenuItem, ListSubheader } from "@material-ui/core";
 import SelectInput from "../components/SelectInput";
 
-const CategorySelectInput = ({ categories, category, error, onChange }) => {
+const CategorySelectInput = ({
+  categories,
+  category,
+  error,
+  onChange,
+  isBudgetForm,
+}) => {
   let incomeCategories = [];
   let expenseCategories = [];
   if (categories) {
@@ -32,15 +38,19 @@ const CategorySelectInput = ({ categories, category, error, onChange }) => {
             </MenuItem>
           );
         })}
-      <ListSubheader>Income</ListSubheader>
-      {categories &&
-        incomeCategories.map((menu, index) => {
-          return (
-            <MenuItem key={index} value={menu.id}>
-              {menu.name}
-            </MenuItem>
-          );
-        })}
+      {!isBudgetForm && (
+        <div>
+          <ListSubheader>Income</ListSubheader>
+          {categories &&
+            incomeCategories.map((menu, index) => {
+              return (
+                <MenuItem key={index} value={menu.id}>
+                  {menu.name}
+                </MenuItem>
+              );
+            })}
+        </div>
+      )}
     </SelectInput>
   );
 };

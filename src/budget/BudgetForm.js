@@ -171,6 +171,7 @@ class BudgetForm extends Component {
             category={category}
             onChange={this.handleInputChange}
             error={errors.category}
+            isBudgetForm={true}
           />
           <TextInput
             type='number'
