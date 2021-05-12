@@ -43,12 +43,6 @@
     }
   }
 
-  .card-item {
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
   .list-item {
     display: flex;
     justify-content: space-between;
@@ -79,6 +73,7 @@
 
       .more-icon {
         color: #808080;
+        cursor: pointer;
       }
     }
   }
