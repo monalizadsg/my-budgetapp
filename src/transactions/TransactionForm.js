@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { createTransaction, updateTransaction } from "./transactionsService";
 import DatePickerInput from "../components/DatePickerInput";
-import SelectInput from "../components/SelectInput";
 import FormActions from "../components/FormActions";
 import TextInput from "../components/TextInput";
-import { MenuItem, ListSubheader } from "@material-ui/core";
 import { format } from "date-fns";
+import CategorySelectInput from "../components/CategorySelectInput";
 import "./TransactionForm.scss";
 
 class TransactionForm extends Component {
@@ -156,32 +155,12 @@ class TransactionForm extends Component {
               onChange={this.handleInputChange}
               error={errors.amount}
             />
-            <SelectInput
-              name='category'
-              label='Category'
-              value={category}
-              error={errors.category}
+            <CategorySelectInput
+              categories={categories}
+              category={category}
               onChange={this.handleInputChange}
-            >
-              <ListSubheader>Expense</ListSubheader>
-              {categories &&
-                expenseCategories.map((menu, index) => {
-                  return (
-                    <MenuItem key={index} value={menu.id}>
-                      {menu.name}
-                    </MenuItem>
-                  );
-                })}
-              <ListSubheader>Income</ListSubheader>
-              {categories &&
-                incomeCategories.map((menu, index) => {
-                  return (
-                    <MenuItem key={index} value={menu.id}>
-                      {menu.name}
-                    </MenuItem>
-                  );
-                })}
-            </SelectInput>
+              error={errors.category}
+            />
             <DatePickerInput
               label='Date'
               value={date}

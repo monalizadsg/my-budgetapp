@@ -13,6 +13,7 @@ import { createBudget, updateBudget, getBudgets } from "./budgetService";
 import FormActions from "../components/FormActions";
 import SelectInput from "../components/SelectInput";
 import TextInput from "../components/TextInput";
+import CategorySelectInput from "./../components/CategorySelectInput";
 import "./BudgetForm.scss";
 
 const periodRange = {
@@ -165,22 +166,12 @@ class BudgetForm extends Component {
     return (
       <div className='budget-form-wrapper'>
         <form noValidate autoComplete='off'>
-          <SelectInput
-            label='Category'
-            name='category'
-            value={category}
+          <CategorySelectInput
+            categories={categories}
+            category={category}
             onChange={this.handleInputChange}
             error={errors.category}
-          >
-            {categories &&
-              categories.map((menu, index) => {
-                return (
-                  <MenuItem key={index} value={menu.id}>
-                    {menu.name}
-                  </MenuItem>
-                );
-              })}
-          </SelectInput>
+          />
           <TextInput
             type='number'
             name='amountLimit'
