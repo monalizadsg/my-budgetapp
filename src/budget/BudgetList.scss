@@ -38,92 +38,102 @@
 
     .card-item {
       border-radius: 6px;
+      padding: 10px;
+      padding-left: 20px;
+
+      &.total {
+        text-transform: uppercase;
+        padding-right: 20px;
+      }
 
       .list-item {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 10px 0;
-        padding-left: 15px;
+      }
 
-        .left-col {
-          width: 95%;
+      .left-col {
+        width: 95%;
+      }
 
-          .details {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
+      .left-col-details {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-            .item-title {
-              font-weight: 400;
-              color: #262626;
-            }
+      .left-col-details-title {
+        font-weight: 600;
+        color: #262626;
+      }
 
-            .item-amount {
-              text-align: end;
-            }
-          }
+      .sub-details {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
-          .sub-details {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            .left {
-              width: 30px;
-              height: 30px;
-              background-color: pink;
-              border-radius: 50%;
-              display: flex;
-              justify-content: flex-start;
-              align-items: flex-start;
-            }
-
-            .right {
-              display: flex;
-              flex-direction: column;
-              width: 90%;
-              padding-left: 5px;
-
-              .progress-bar {
-                width: 100%;
-                margin-top: 10px;
-
-                .reach-progress-limit {
-                  .MuiLinearProgress-bar {
-                    background-color: #f44336;
-                  }
-                }
-              }
-              .amount-left {
-                display: flex;
-                align-self: flex-end;
-                font-size: 11px;
-                margin-top: 3px;
-
-                &.overspent {
-                  color: #f44336;
-                }
-              }
-            }
-          }
+        &.total {
+          flex-direction: column;
         }
+      }
 
-        .right-col {
-          width: 5%;
-          color: #808080;
+      .sub-details-left {
+        width: 30px;
+        height: 30px;
+        background-color: pink;
+        border-radius: 50%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
 
-          .more-icon {
-            width: 20px;
-            margin: auto;
-            display: flex;
+        &.total-left {
+          background-color: white;
+        }
+      }
 
-            &:hover {
-              cursor: pointer;
-            }
+      .sub-details-right {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+        padding-left: 5px;
+      }
+
+      .sub-details-progress-bar {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .reach-progress-limit {
+        .MuiLinearProgress-bar {
+          background-color: #f44336;
+        }
+      }
+
+      .sub-details-amount-left {
+        display: flex;
+        align-self: flex-end;
+        font-size: 11px;
+        margin-top: 3px;
+
+        &.overspent {
+          color: #f44336;
+        }
+      }
+
+      .right-col {
+        width: 5%;
+        color: #808080;
+
+        .more-icon {
+          width: 20px;
+          margin: auto;
+          display: flex;
+
+          &:hover {
+            cursor: pointer;
           }
         }
       }

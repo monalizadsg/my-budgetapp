@@ -192,7 +192,7 @@ const BudgetList = ({
   };
 
   const renderHeader = () => {
-    const period = data[0]?.periodType;
+    const period = dateRange.period;
     const startDate = format(new Date(dateRange.startDate), "dd MMM yyyy");
     const endDate = format(new Date(dateRange.endDate), "dd MMM yyyy");
     const notGreaterThanToday = new Date() > new Date(endDate);
@@ -218,15 +218,44 @@ const BudgetList = ({
 
   const renderTotalBudget = () => {
     let totalAmountLimit = 0;
+    let totalAmountLeft = 0;
 
     for (const item of data) {
       totalAmountLimit += item.amountLimit;
+      totalAmountLeft += item.amountLeft;
     }
 
+    const totalExpense = getTotalExpense(totalAmountLimit, totalAmountLeft);
+    const isLimitReach = totalAmountLeft <= 0;
+
     return (
-      <div className='total-budget'>
-        Total: {formatAmount(totalAmountLimit)}
-      </div>
+      <Card className='card-item total'>
+        <div className='left-col-details'>
+          <div className='left-col-details-title'>
+            Total {dateRange.period} Budget
+          </div>
+          <div className='left-col-details-amount'>
+            <h4>{formatAmount(totalAmountLimit)}</h4>
+          </div>
+        </div>
+        <div className='sub-details total'>
+          <div className='sub-details-progress-bar'>
+            <BorderLinearProgress
+              variant='determinate'
+              value={totalExpense}
+              className={isLimitReach ? "reach-progress-limit" : ""}
+            />
+          </div>
+          <div
+            className={`sub-details-amount-left ${
+              isLimitReach ? "overspent" : ""
+            }`}
+          >
+            {totalAmountLeft < 0 ? "Overspent: " : "Left: "}
+            {formatAmount(totalAmountLeft)}
+          </div>
+        </div>
+      </Card>
     );
   };
 
@@ -256,18 +285,18 @@ const BudgetList = ({
               <Card key={item.id} className='card-item'>
                 <div className='list-item'>
                   <div className='left-col'>
-                    <div className='details'>
-                      <div className='item-title'>{item.category.name}</div>
-                      <div className='item-amount'>
-                        <h4 className='budget-total'>
-                          {formatAmount(item.amountLimit)}
-                        </h4>
+                    <div className='left-col-details'>
+                      <div className='left-col-details-title'>
+                        {item.category.name}
+                      </div>
+                      <div className='left-col-details-amount'>
+                        <h4>{formatAmount(item.amountLimit)}</h4>
                       </div>
                     </div>
                     <div className='sub-details'>
-                      <div className='left'></div>
-                      <div className='right'>
-                        <div className='progress-bar'>
+                      <div className='sub-details-left'></div>
+                      <div className='sub-details-right'>
+                        <div className='sub-details-progress-bar'>
                           <BorderLinearProgress
                             variant='determinate'
                             value={totalExpense}
@@ -277,7 +306,7 @@ const BudgetList = ({
                           />
                         </div>
                         <div
-                          className={`amount-left ${
+                          className={`sub-details-amount-left ${
                             isLimitReach ? "overspent" : ""
                           }`}
                         >
